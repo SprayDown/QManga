@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="org.spray.qmanga.ui.fragments.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/catalogFragment"
+        android:name="org.spray.qmanga.ui.fragments.CatalogFragment"
+        android:label="@string/catalog_header" >
+        <action
+            android:id="@+id/action_catalogFragment_to_filtersFragment"
+            app:destination="@id/filtersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="org.spray.qmanga.ui.fragments.LibraryFragment"
+        android:label="@string/library" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="org.spray.qmanga.ui.fragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/filtersFragment"
+        android:name="org.spray.qmanga.ui.impl.catalog.filters.FiltersFragment"
+        android:label="@string/filters" >
+        <argument
+            android:name="queryData"
+            app:argType="org.spray.qmanga.client.models.QueryData" />
+        <action
+            android:id="@+id/action_filtersFragment_to_tagListFragment"
+            app:destination="@id/tagListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tagListFragment"
+        android:name="org.spray.qmanga.ui.impl.catalog.filters.TagListFragment"
+        android:label="TagListFragment" >
+        <argument
+            android:name="tagList"
+            app:argType="org.spray.qmanga.client.models.MangaTag[]" />
+        <argument
+            android:name="typeName"
+            app:argType="string" />
+        <argument
+            android:name="stringId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="activeTags"
+            app:argType="org.spray.qmanga.client.models.MangaTag[]" />
+    </fragment>
+</navigation>

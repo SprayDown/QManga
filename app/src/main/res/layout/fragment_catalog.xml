@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/bgc">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginTop="4dp"
+        android:divider="@drawable/divider"
+        android:foregroundGravity="bottom"
+        android:background="?attr/bgc"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        android:elevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:backgroundTint="?attr/bg_element"
+            android:text="@string/sort"
+            android:textColor="?attr/tc"
+            android:textSize="12sp"
+            app:cornerRadius="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:backgroundTint="?attr/bg_element"
+            android:text="@string/filters"
+            android:textColor="?attr/tc"
+            android:textSize="12sp"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginTop="3dp"
+        android:overScrollMode="always"
+        android:paddingBottom="@dimen/bottom_nav_height"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

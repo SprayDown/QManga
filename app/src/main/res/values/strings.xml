@@ -1,6 +1,60 @@
 <resources>
-    <string name="app_name">MangaVision</string>
+    <string name="app_name">QManga</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description">Описание</string>
     <string name="manga_description">Description fragment</string>
+    <string name="search_hint">Поиск</string>
+
+    <string name="search">Поиск</string>
+    <string name="home">Главная</string>
+    <string name="catalog">Каталог</string>
+    <string name="catalog_header">Каталог манги</string>
+    <string name="library">Библиотека</string>
+    <string name="profile">Профиль</string>
+
+    <string name="year">%1$sг.</string>
+
+    <string name="read">Начать читать</string>
+    <string name="continue_read">Продолжить</string>
+
+    <string name="content">Содержание</string>
+
+    <string name="filters">Фильтры</string>
+    <string name="sort">Сортировать</string>
+    <string name="sort_title">Сортировка</string>
+    <string name="sort_ordering">Порядок</string>
+
+    <string name="any">Любые</string>
+    <string name="information">Информация</string>
+    <string name="chapters">Главы</string>
+    <string name="recent">Недавние</string>
+    <string name="downloads">Загруженные</string>
+
+    <string name="main_popular">Популярные</string>
+    <string name="main_newest">Новое</string>
+
+
+    <!-- sort types -->
+    <string name="newest">Новизне</string>
+    <string name="last_updates">Последним обновлениям</string>
+    <string name="popular">Популярности</string>
+    <string name="likes">Лайкам</string>
+    <string name="views">Просмотрам</string>
+    <string name="chapter_count">Количеству глав</string>
+    <string name="random">Мне повезет</string>
+
+    <string name="descending">По убыванию</string>
+    <string name="ascending">По возрастанию</string>
+
+    <string name="loading_chapters">Загружаем главы…</string>
+    <string name="page_null">0/0</string>
+    <string name="categories">Категории</string>
+    <string name="limit">Ограничения</string>
+    <string name="genres">Жанры</string>
+    <string name="status">Статус</string>
+    <string name="reset">Сбросить</string>
+    <string name="empty" />
+
+    <string name="selected">Выбрано</string>
 </resources>

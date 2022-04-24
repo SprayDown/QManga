@@ -9,15 +9,19 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FFB2B2B2</color>
 
+    <color name="closed_gray">#FF4F4F4F</color>
+
     <!-- Other Colors -->
     <color name="blue_primary">#32A4D8</color>
     <color name="blue_primary_dark">#3590BA</color>
     <color name="black_tx">#FF191919</color>
     <color name="white_tx">#FFF2F2F2</color>
-    <color name="dark_nav">#FF111111</color>
-    <color name="light_nav">#FFD2D2D2</color>
-    <color name="dark_bg">#FF111111</color>
+    <color name="dark_nav">#1F2024</color>
+    <color name="light_nav">#C6C6C6</color>
+    <color name="dark_bg">#FF1c1c1e</color>
     <color name="light_bg">#FFD2D2D2</color>
-    <color name="dark_bg_element">#FF2C2C2C</color>
+    <color name="dark_bg_element">#FF141414</color>
     <color name="light_bg_element">#FFE3E3E3</color>
+
+    <color name="colorControlHighlight">#59F1F1F1</color>
 </resources>

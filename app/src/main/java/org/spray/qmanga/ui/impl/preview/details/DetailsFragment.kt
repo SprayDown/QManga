@@ -13,7 +13,9 @@ import com.google.android.material.chip.Chip
 import org.spray.qmanga.R
 import org.spray.qmanga.client.models.MangaDetails
 import org.spray.qmanga.databinding.FragmentDetailsBinding
-import org.spray.qmanga.utils.themeColor
+import org.spray.qmanga.ui.impl.preview.PreviewViewModel
+import org.spray.qmanga.utils.ext.prettyCount
+import org.spray.qmanga.utils.ext.themeColor
 
 
 class DetailsFragment(private val details: MangaDetails) : Fragment() {
@@ -21,18 +23,26 @@ class DetailsFragment(private val details: MangaDetails) : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var mContext: Context
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mContext = container?.context!!
+        mContext = requireContext()
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
         binding.apply {
+            textViewName.text = details.data.name
+            textViewMtype.text = details.data.type
+
+            if (details.eng_name != null) {
+                textViewEnName.visibility = View.VISIBLE
+                textViewEnName.text = details.eng_name
+            }
+
+            textViewYear.text = getString(R.string.year, details.issue_year)
+            imageView.visibility = View.VISIBLE
+            textViewViews.text = details.total_views.toString().prettyCount()
+
             layoutInfo.addView(getInfoView("Статус тайтла", 0, resources.getColor(R.color.gray)))
             layoutInfoAnswers.addView(
                 getInfoView(
@@ -44,21 +54,21 @@ class DetailsFragment(private val details: MangaDetails) : Fragment() {
             layoutInfo.addView(getInfoView("Загружено глав", 1, resources.getColor(R.color.gray)))
             layoutInfoAnswers.addView(
                 getInfoView(
-                    details.chapters?.size?.toString()
-                        ?: "Нет глав", 1, mContext.themeColor(R.attr.tc)
+                    if (details.count_chapters > 0) details.count_chapters.toString()
+                    else "Нет глав", 1, mContext.themeColor(R.attr.tc)
                 )
             )
 
             layoutInfo.addView(getInfoView("Автор", 2, resources.getColor(R.color.gray)))
             layoutInfoAnswers.addView(
                 getInfoView(
-                    details.data.author ?: "Неизвестно",
+                    details.author ?: "Неизвестно",
                     2,
                     mContext.themeColor(R.attr.tc)
                 )
             )
 
-            descriptionText.text = details.description
+            textViewDesc.text = details.description
 
             details.tag.forEach { tag ->
                 val chip = inflater.inflate(
@@ -67,6 +77,7 @@ class DetailsFragment(private val details: MangaDetails) : Fragment() {
                     false
                 ) as Chip?
                 chip?.text = tag.name
+                chip?.isCheckable = false
                 chipGroup.addView(chip)
             }
         }
@@ -79,13 +90,13 @@ class DetailsFragment(private val details: MangaDetails) : Fragment() {
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        params.setMargins(0, 0, 0, 14)
+        params.setMargins(0, 0, 0, 12)
         val textView = TextView(mContext)
         textView.layoutParams = params
         textView.text = title
         textView.textSize = 15F
         textView.id = id
-        textView.setPadding(6)
+        textView.setPadding(4)
         textView.setTextColor(colorId)
         return textView
     }

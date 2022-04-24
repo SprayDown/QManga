@@ -3,33 +3,126 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/spray/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/list_content.xml" value="0.25" />
+        <entry key="..\:/Users/spray/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_multiple_choice.xml" value="0.16" />
+        <entry key="..\:/Users/spray/AppData/Local/Temp/drawable-temp/fake_of_tricheckbox_anim.xml" value="0.1255" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.165" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/above_shadow.xml" value="0.1615" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/anim_check_box_blank_to_checked_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/anim_check_box_checked_to_blank_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/anim_check_box_checked_to_indeterminate_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/anim_check_box_checked_to_x_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/anim_check_box_x_to_blank_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/anim_checkbox_blank_to_x_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/anim_checkbox_indeterminate_to_blank_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/below_shadow.xml" value="0.1615" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/bottomnav_background.xml" value="0.1765" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/divider.xml" value="0.1725" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/divider_line.xml" value="0.1635" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/empty_background.xml" value="0.153" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/empty_icon.xml" value="0.183" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_arrow_upward.xml" value="0.2125" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_back.xml" value="0.1325" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_back2.xml" value="0.178" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_bookmark.xml" value="0.1405" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_check_box.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_check_box_indeterminate.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_check_box_outline.xml" value="0.142" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_check_box_x.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_close.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_close_gray.xml" value="0.179" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_forward.xml" value="0.181" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_forward_16.xml" value="0.2175" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_home.xml" value="0.1715" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_launcher_background.xml" value="0.165" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_library.xml" value="0.1645" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_list.xml" value="0.177" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_play_14.xml" value="0.179" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_search.xml" value="0.139" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_share.xml" value="0.1405" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_star.xml" value="0.141" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_user.xml" value="0.158" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/img_gradient.xml" value="0.2025" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/mv_button.xml" value="0.161" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/outline_rect.xml" value="0.168" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/progress_bar.xml" value="0.1485" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ripple_element_bg.xml" value="0.1175" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/rounded_preview.xml" value="0.155" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/rounded_primary.xml" value="0.187" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/rounded_rect.xml" value="0.1335" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/searchview_bg.xml" value="0.135" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/searchview_querybg.xml" value="0.135" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/selected_chapter.xml" value="0.1685" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_anim_vector_checked_to_intermediate.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_anim_vector_checked_to_unchecked.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_anim_vector_intermediate_to_unchecked.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_anim_vector_unchecked_to_checked.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_anim_vector_unchecked_to_indeterminate.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_checked.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_checked_disabled.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_indeterminate.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_indeterminate_disabled.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_transition_checked_to_indeterminate.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_transition_checked_to_unchecked.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_transition_unchecked_to_checked.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/sephiroth_checkbox3_unchecked.xml" value="0.1" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/tab_background.xml" value="0.137" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/tricheckbox_anim.xml" value="0.1" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/font/nunito_sans_bold.xml" value="0.16246259085079093" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_chapters.xml" value="0.17" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_details.xml" value="0.28492392807745504" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout-v23/activity_preview.xml" value="0.1703125" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout-v23/fragment_preview.xml" value="0.21041666666666667" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout-v26/fragment_search.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/activity_preview.xml" value="0.16" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/activity_search.xml" value="0.17272338606241983" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/appbar.xml" value="0.16" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_catalog.xml" value="0.16" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_chapters.xml" value="0.33" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_chapters_reader.xml" value="0.16" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_details.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_downloads_page.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_filters.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_genres.xml" value="0.17272338606241983" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_home.xml" value="0.17" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_library.xml" value="0.17" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_manga_view.xml" value="0.25" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_preview.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_preview.xml" value="0.18" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_profile.xml" value="0.14322916666666666" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_search.xml" value="0.18" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_chapter.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_reader.xml" value="0.25" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_recent_page.xml" value="0.18" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_search.xml" value="0.22" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_tag_list.xml" value="0.15989739204788372" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_chapter.xml" value="0.25" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_chip_entry.xml" value="0.5" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_chip_genre.xml" value="0.5" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_mangacard.xml" value="0.25" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_filter_checkbox.xml" value="0.33" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_mangacard.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_mangacard_grid.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_mangalist.xml" value="0.18" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_page.xml" value="0.25" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/item_reader_chapter.xml" value="0.25" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/items_row.xml" value="0.33" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/list_header.xml" value="0.15989739204788372" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/loading_dialog.xml" value="0.12141941000427534" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/manga_item.xml" value="0.25" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/preview_bottombar.xml" value="0.16" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/reader_appbar.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/reader_bottombar.xml" value="0.18" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/reader_chapter.xml" value="0.16" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/reader_toolbar.xml" value="0.14878153056861906" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/sided_view.xml" value="0.17532467532467533" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/toolbar_reader.xml" value="0.14621633176571183" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/tri_state_checkbox.xml" value="0.33" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/bottom_nav.xml" value="0.21" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/bottom_preview_menu.xml" value="0.12868747327917915" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/bottom_reader_menu.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/homebar_menu.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/searchbar_menu.xml" value="0.11244121419410004" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/tagsbar_menu.xml" value="0.33" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/xml/searchable.xml" value="0.14920906370243694" />
       </map>
     </option>
   </component>

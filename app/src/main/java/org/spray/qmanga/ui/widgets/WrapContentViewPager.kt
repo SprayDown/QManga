@@ -5,24 +5,29 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 
-class WrapContentViewPager(cont: Context, attr: AttributeSet?) : ViewPager(cont,attr) {
+
+class WrapContentViewPager(cont: Context, attr: AttributeSet?) : ViewPager(cont, attr) {
+
+    init {
+        initPageChangeListener()
+    }
+
+    private fun initPageChangeListener() {
+        addOnPageChangeListener(object : SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                requestLayout()
+            }
+        })
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        var height = 0
-        for (i in 0 until childCount) {
-            val child: View = getChildAt(i)
-            child.measure(
-                widthMeasureSpec,
-                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-            )
-            val h: Int = child.measuredHeight
-            if (h > height) height = h
+        var heightMeasureSpec = heightMeasureSpec
+        val child: View? = getChildAt(currentItem)
+        if (child != null) {
+            child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED))
+            val h: Int = child.getMeasuredHeight()
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(h, MeasureSpec.EXACTLY)
         }
-        val heightMeasure = MeasureSpec.makeMeasureSpec(
-            height,
-            MeasureSpec.EXACTLY
-        )
-        super.onMeasure(widthMeasureSpec, heightMeasure)
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 }

@@ -7,58 +7,139 @@
     android:background="?attr/bgc"
     tools:context=".ui.fragments.HomeFragment">
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:paddingBottom="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/newestView"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/newestText" />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/newestText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="30dp"
-                android:text="Новые"
-                android:textSize="24sp"
-                android:textColor="?attr/tc"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/popularView" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_fastStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/popularView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/popularText" />
+                    <ImageView
+                        android:id="@+id/imageView_bgManga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:foreground="@drawable/below_shadow"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/empty"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/popularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Популярное"
-                android:textSize="24sp"
-                android:textColor="?attr/tc"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                    <ImageView
+                        android:id="@+id/imageView_childManga"
+                        android:layout_width="126dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="26dp"
+                        android:layout_marginStart="16dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/empty"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_manga"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:textColor="@color/white_tx"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView_childManga"
+                        app:layout_constraintTop_toTopOf="@+id/imageView_childManga" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_Read"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:background="@drawable/rounded_primary"
+                        android:shadowRadius="4"
+                        android:text="@string/continue_read"
+                        android:textColor="@color/white_tx"
+                        android:textSize="12sp"
+                        app:iconPadding="0dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView_childManga"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/popularView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/popularText" />
+
+                <TextView
+                    android:id="@+id/popularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:text="@string/main_popular"
+                    android:textColor="?attr/tc"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_fastStart" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/newestView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/newestText" />
+
+                <TextView
+                    android:id="@+id/newestText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:text="@string/main_newest"
+                    android:textColor="?attr/tc"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/popularView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
