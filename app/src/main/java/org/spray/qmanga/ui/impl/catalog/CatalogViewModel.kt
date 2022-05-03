@@ -1,6 +1,5 @@
 package org.spray.qmanga.ui.impl.catalog
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import org.spray.qmanga.client.models.ListType
@@ -10,7 +9,7 @@ import org.spray.qmanga.client.models.SortType
 import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.ui.base.BaseViewModel
 
-class CatalogViewModel(val context: Context, val source: Source) : BaseViewModel() {
+class CatalogViewModel(val source: Source) : BaseViewModel() {
 
     val mangas = MutableLiveData<List<MangaData>>()
     var queryData: QueryData = QueryData()
@@ -22,7 +21,7 @@ class CatalogViewModel(val context: Context, val source: Source) : BaseViewModel
     fun update(
     ) {
         job = launchLoadingJob(Dispatchers.Default) {
-            mangas.postValue(source.loadList(context, page, count, queryData, sortType, listType))
+            mangas.postValue(source.loadList(page, count, queryData, sortType, listType))
         }
     }
 }

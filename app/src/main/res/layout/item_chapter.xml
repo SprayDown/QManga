@@ -6,6 +6,7 @@
     android:layout_height="58dp"
     android:background="?attr/bgc"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?attr/selectableItemBackgroundBorderless">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,28 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView_locked"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="14dp"
+            android:src="@drawable/ic_lock_18"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView_download"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:src="@drawable/ic_round_arrow_circle_down_24"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView_tome"
@@ -23,7 +46,7 @@
             android:gravity="center"
             android:text="0"
             android:textColor="@color/gray"
-            android:textSize="24dp"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +56,6 @@
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginTop="6dp"
-            android:fontFamily="@font/nunito_sans_bold"
             android:text="Глава 0"
             android:textColor="?attr/tc"
             android:textSize="17sp"
@@ -44,12 +66,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="7dp"
             android:gravity="bottom|start"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView_locked"
             app:layout_constraintStart_toEndOf="@+id/textView_date">
 
             <ImageView
@@ -65,12 +87,24 @@
                 android:id="@+id/textView_publisher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_sans_bold"
                 android:text="@string/empty"
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
 
         </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView_local"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginEnd="-8dp"
+            android:src="@drawable/ic_round_arrow_circle_down_24"
+            android:tint="?attr/colorPrimary"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView_tome" />
 
         <TextView
             android:id="@+id/textView_date"
@@ -78,12 +112,11 @@
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginBottom="6dp"
-            android:fontFamily="@font/nunito_sans_bold"
             android:gravity="bottom"
             android:text="@string/empty"
             android:textColor="@color/gray"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/textView_tome" />
+            app:layout_constraintStart_toEndOf="@+id/imageView_local" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

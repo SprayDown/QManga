@@ -9,15 +9,15 @@ import org.spray.qmanga.client.models.MangaDetails
 import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.ui.base.BaseViewModel
 
-class MangaListViewModel(val context: Context, val source: Source) : BaseViewModel() {
+class MangaListViewModel(val source: Source) : BaseViewModel() {
 
     val newestList = MutableLiveData<List<MangaData>>()
     val popularList = MutableLiveData<List<MangaData>>()
 
     fun loadList() {
         job = launchLoadingJob(Dispatchers.Default) {
-            newestList.postValue(source.loadNewest(context))
-            popularList.postValue(source.loadPopular(context))
+            newestList.postValue(source.loadNewest())
+            popularList.postValue(source.loadPopular())
         }
     }
 }

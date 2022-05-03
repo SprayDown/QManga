@@ -56,7 +56,7 @@ class CatalogFragment : BaseFragment(R.string.catalog_header) {
         )
         val source = SourceManager.get(MangaSource.REMANGA)
 
-        viewModel = ViewModelProvider(this, CatalogViewFactory(requireContext(), source)).get(
+        viewModel = ViewModelProvider(this, CatalogViewFactory(source)).get(
             CatalogViewModel::class.java
         )
         viewModel.mangas.observe(viewLifecycleOwner, adapter::setDataSet)
@@ -72,6 +72,10 @@ class CatalogFragment : BaseFragment(R.string.catalog_header) {
             swipeRefreshLayout.setOnRefreshListener {
                 update()
                 swipeRefreshLayout.isRefreshing = false
+            }
+
+            viewModel.loading.observe(viewLifecycleOwner) {
+                swipeRefreshLayout.isRefreshing = it
             }
 
             buttonSort.setOnClickListener {

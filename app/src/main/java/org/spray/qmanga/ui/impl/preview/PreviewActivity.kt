@@ -1,11 +1,16 @@
 package org.spray.qmanga.ui.impl.preview
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -23,21 +28,24 @@ import org.spray.qmanga.R
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.client.models.MangaData
 import org.spray.qmanga.client.models.MangaDetails
+import org.spray.qmanga.client.models.MangaRecent
 import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.client.source.SourceManager
 import org.spray.qmanga.databinding.ActivityPreviewBinding
 import org.spray.qmanga.sqlite.QueryResponse
 import org.spray.qmanga.sqlite.query.RecentQuery
-import org.spray.qmanga.sqlite.models.MangaRecent
 import org.spray.qmanga.ui.base.BaseActivity
+import org.spray.qmanga.ui.impl.library.download.DownloadManager
+import org.spray.qmanga.ui.impl.library.download.DownloadService
 import org.spray.qmanga.ui.impl.page.PageFragmentAdapter
 import org.spray.qmanga.ui.impl.preview.chapters.PreviewChaptersFragment
 import org.spray.qmanga.ui.impl.preview.details.DetailsFragment
 import org.spray.qmanga.ui.reader.ReaderActivity
 import org.spray.qmanga.utils.ext.blurRenderScript
 import org.spray.qmanga.utils.ext.forceShowBar
-import kotlin.math.abs
+import kotlin.math.roundToInt
 
+const val CHAPTER_DOWNLOADED_ACTION = "org.spray.qmanga.chapterDownloadAction"
 
 class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
 
@@ -59,6 +67,18 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
     private var recent: MangaRecent? = null
     private var chaptersFragment: PreviewChaptersFragment? = null
     private var chapter: MangaChapter? = null
+
+    private var details: MangaDetails? = null
+
+    private val actionReceive: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.i("qmanga", "received")
+            val chapterId = intent?.getLongExtra("chapter_id", -1)
+            chaptersFragment?.getChapters()
+                ?.indexOf(chapterId?.let { chaptersFragment?.getChapter(it) })
+                ?.let { chapter -> chaptersFragment?.adapter?.notifyItemChanged(chapter) }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,16 +109,14 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
             })
 
         viewModel =
-            ViewModelProvider(this, PreviewModelFactory(applicationContext, source, mangaData))
+            ViewModelProvider(this, PreviewModelFactory(source, mangaData))
                 .get(PreviewViewModel::class.java)
 
         with(binding) {
             appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                if (abs(verticalOffset) == appBarLayout?.totalScrollRange) {
-                    linearLayoutRating.visibility = View.GONE
-                } else {
-                    linearLayoutRating.visibility = View.VISIBLE
-                }
+                val fadeAlpha = ((255 * (1.0f - verticalOffset / -appBarLayout.totalScrollRange)))
+                linearLayoutRating.alpha = fadeAlpha
+                imageViewPreview.imageAlpha = fadeAlpha.roundToInt()
             })
 
             collapsingToolbar.title = mangaData.name
@@ -143,28 +161,55 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
         viewModel.loading.observe(this, this::setProgressBar)
 
         viewModel.mDetails.observe(this)
-        { setDetailValues(it, mangaData) }
+        {
+            details = it
+            setDetails(it, mangaData)
+        }
+
+        registerReceiver(actionReceive, IntentFilter(CHAPTER_DOWNLOADED_ACTION))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(actionReceive)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.previewbar_menu, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
                 finish()
+
+            R.id.item_Download ->
+                if (details != null && DownloadManager.checkPermission(this))
+                    chaptersFragment?.getChapters()?.let {
+                        val bundle = Bundle().apply {
+                            putParcelable("manga_data", mangaData)
+                            putParcelableArrayList("manga_chapters", ArrayList(it))
+                        }
+                        val intent = Intent(this, DownloadService::class.java).apply {
+                            putExtra("bundle", bundle)
+                        }
+                        startService(intent)
+                    }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
         super.onResume()
-        historyCheck(mangaData)
+        initHistory(mangaData)
     }
 
     private fun setProgressBar(state: Boolean) {
         binding.progressBar.visibility = if (state) View.VISIBLE else View.INVISIBLE
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setDetailValues(details: MangaDetails, data: MangaData) {
+    private fun setDetails(details: MangaDetails, data: MangaData) {
         val imageLoader = ImageLoader.getInstance()
         imageLoader
             .loadImage(details.previewImgUrl, options, object : SimpleImageLoadingListener() {
@@ -183,7 +228,7 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
                         )
 
                         binding.imageViewPreview.setImageDrawable(td)
-                        td.startTransition(150);
+                        td.startTransition(130);
                     }
                 }
             })
@@ -240,7 +285,7 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
         }
     }
 
-    private fun historyCheck(data: MangaData) {
+    private fun initHistory(data: MangaData) {
         val query = RecentQuery()
         query.read(data.hashId, object : QueryResponse<MangaRecent> {
             override fun onSuccess(data: MangaRecent) {
@@ -259,5 +304,9 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
         chapter = MangaChapter(
             data.chapterId, String(), data.chapterTome, data.chapterNumber, null
         )
+    }
+
+    companion object {
+        val LOCAL_MANGA_ACTION = "org.spray.qmanga.LOCAL_MANGA_BROADCAST"
     }
 }

@@ -24,6 +24,7 @@
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_arrow_upward.xml" value="0.2125" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_back.xml" value="0.1325" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_back2.xml" value="0.178" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.1" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_bookmark.xml" value="0.1405" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_check_box.xml" value="0.1" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_check_box_indeterminate.xml" value="0.1" />
@@ -37,6 +38,8 @@
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_launcher_background.xml" value="0.165" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_library.xml" value="0.1645" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_list.xml" value="0.177" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_lock_20.xml" value="0.165" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_lock_24.xml" value="0.157" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_play_14.xml" value="0.179" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_search.xml" value="0.139" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/drawable/ic_share.xml" value="0.1405" />
@@ -79,7 +82,7 @@
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_catalog.xml" value="0.16" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_chapters.xml" value="0.33" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_chapters_reader.xml" value="0.16" />
-        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_details.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_details.xml" value="0.25" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_downloads_page.xml" value="0.1" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_filters.xml" value="0.2" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/layout/fragment_genres.xml" value="0.17272338606241983" />
@@ -118,6 +121,7 @@
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/bottom_preview_menu.xml" value="0.12868747327917915" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/bottom_reader_menu.xml" value="0.2" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/homebar_menu.xml" value="0.2" />
+        <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/previewbar_menu.xml" value="0.22" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/searchbar_menu.xml" value="0.11244121419410004" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/menu/tagsbar_menu.xml" value="0.33" />
         <entry key="..\:/Users/spray/Desktop/projects/android/mangavision/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />

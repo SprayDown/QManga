@@ -53,7 +53,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
 
         searchAdapter = MangaListAdapter(ArrayList(), this)
 
-        viewModel = ViewModelProvider(this, SearchViewFactory(applicationContext, source))
+        viewModel = ViewModelProvider(this, SearchViewFactory(source))
             .get(SearchViewModel::class.java)
 
         binding.apply {

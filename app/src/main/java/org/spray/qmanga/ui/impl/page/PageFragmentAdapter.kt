@@ -11,7 +11,7 @@ class PageFragmentAdapter(
     fm: FragmentActivity
 ) : FragmentStateAdapter(fm) {
 
-    val fragments = arrayListOf<Fragment>()
+    private val fragments = arrayListOf<Fragment>()
 
     fun add(fragment: Fragment) {
         fragments.add(fragment)

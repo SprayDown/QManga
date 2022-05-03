@@ -15,6 +15,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import org.spray.qmanga.R
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.databinding.FragmentChaptersReaderBinding
+import org.spray.qmanga.ui.base.listener.OnItemClickListener
 import org.spray.qmanga.ui.reader.ReaderActivity
 import org.spray.qmanga.utils.ext.forceShowBar
 
@@ -33,14 +34,17 @@ class ReaderChapterFragment(
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mContext = container?.context!!
         binding = FragmentChaptersReaderBinding.inflate(inflater, container, false)
 
         val adapter = ReaderChapterAdapter(chapters.toList(), activity,
-            currentChapter, object : OnItemClickListener {
+            currentChapter, object : OnItemClickListener<MangaChapter> {
                 override fun onItemClick(item: MangaChapter) {
                     (requireActivity() as ReaderActivity).updateChapter(item)
+                }
+
+                override fun onLongClick(item: MangaChapter) {
                 }
             })
 
@@ -82,9 +86,5 @@ class ReaderChapterFragment(
             scrollFlags =
                 AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
         }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(item: MangaChapter)
     }
 }

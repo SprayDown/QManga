@@ -77,11 +77,6 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="TabLayout_Theme" parent="android:Widget">
-        <item name="android:singleLine">true</item>
-        <item name="android:background">?attr/bgc</item>
-    </style>
-
     <style name="Theme.QManga.SearchViewTheme" parent="android:Widget.Material.SearchView">
         <item name="closeIcon">@drawable/ic_close_gray</item>
     </style>
@@ -89,6 +84,10 @@
     <style name="FilterCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">@color/gray</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+    <style name="TabLayoutTheme" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">

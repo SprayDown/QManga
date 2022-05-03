@@ -17,8 +17,8 @@ import org.spray.qmanga.client.models.MangaSource
 import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.client.source.SourceManager
 import org.spray.qmanga.databinding.ReaderChapterBinding
+import org.spray.qmanga.client.models.MangaRecent
 import org.spray.qmanga.sqlite.query.RecentQuery
-import org.spray.qmanga.sqlite.models.MangaRecent
 import org.spray.qmanga.ui.base.BaseActivity
 import org.spray.qmanga.ui.reader.chapters.ReaderChapterFragment
 import org.spray.qmanga.utils.ext.forceShowBar
@@ -64,7 +64,7 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
         source = SourceManager.get(MangaSource.REMANGA)
         adapter = ReaderAdapter(ArrayList(), this)
         viewModel =
-            ViewModelProvider(this, ReaderViewFactory(applicationContext, source, chapter))
+            ViewModelProvider(this, ReaderViewFactory(source, chapter))
                 .get(ReaderViewModel::class.java)
 
         if (chapters == null) {
@@ -110,9 +110,10 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
 
         initAppBar(chapter)
 
-        if (chapters != null)
+        if (chapters != null) {
+            chapters!!.filter { !it.locked }
             initBottomBar(chapters!!)
-        else
+        } else {
             viewModel.mChapters.observe(this) {
                 if (it != null) {
                     binding.textViewLoading.visibility = View.GONE
@@ -122,6 +123,7 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
                     chapters = arrayList
                 }
             }
+        }
     }
 
     override fun onPause() {

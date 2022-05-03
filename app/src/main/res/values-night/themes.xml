@@ -14,8 +14,4 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="TabLayout_Theme" parent="@style/Theme.MangaVision">
-        <item name="android:singleLine">true</item>
-    </style>
-
 </resources>

@@ -21,7 +21,7 @@ import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.client.source.SourceManager
 import org.spray.qmanga.databinding.FragmentHomeBinding
 import org.spray.qmanga.sqlite.QueryResponse
-import org.spray.qmanga.sqlite.models.MangaRecent
+import org.spray.qmanga.client.models.MangaRecent
 import org.spray.qmanga.sqlite.query.RecentQuery
 import org.spray.qmanga.ui.base.BaseFragment
 import org.spray.qmanga.ui.impl.mangalist.MangaCardAdapter
@@ -57,7 +57,7 @@ class HomeFragment : BaseFragment() {
         setHasOptionsMenu(true)
         source = SourceManager.getCurrentSource()
 
-        viewModel = ViewModelProvider(this, MangaListViewFactory(requireContext(), source))
+        viewModel = ViewModelProvider(this, MangaListViewFactory(source))
             .get(MangaListViewModel::class.java)
 
         popularAdapter = MangaCardAdapter(

@@ -1,18 +1,16 @@
 package org.spray.qmanga.client.source.impl
 
-import android.content.Context
-import com.android.volley.Request
-import com.android.volley.VolleyError
 import org.json.JSONException
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.spray.qmanga.client.models.*
 import org.spray.qmanga.client.source.Source
-import org.spray.qmanga.network.Singleton
-import org.spray.qmanga.utils.ext.getJSONObjectOrNull
+import org.spray.qmanga.network.NetworkHelper
 import org.spray.qmanga.utils.ext.map
+import org.spray.qmanga.utils.ext.mapArray
 import org.spray.qmanga.utils.ext.mapToSet
 import java.net.URLEncoder
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -196,23 +194,17 @@ class ReMangaSource() : Source() {
         )
     }
 
-    override suspend fun loadPopular(context: Context): List<MangaData> {
-        return loadList(context, 1, MAX_COUNT, null, SortType.POPULAR)
+    override suspend fun loadPopular(): List<MangaData> {
+        return loadList(1, MAX_COUNT, null, SortType.POPULAR)
     }
 
-    override suspend fun loadNewest(context: Context): List<MangaData> {
-        return loadList(context, 1, MAX_COUNT, null, SortType.NEWEST)
+    override suspend fun loadNewest(): List<MangaData> {
+        return loadList(1, MAX_COUNT, null, SortType.NEWEST)
     }
 
-    override suspend fun loadDetails(context: Context, data: MangaData): MangaDetails {
+    override suspend fun loadDetails(data: MangaData): MangaDetails {
         val url = "https://api.$domain/api/titles/" + data.url
-
-        val jsonObject = Singleton.getInstance(context).requestQueue.getJSONObjectOrNull(
-            Request.Method.GET,
-            url,
-            null,
-            VolleyError::printStackTrace
-        )
+        val jsonObject = NetworkHelper.getJSONObject(url)
         jsonObject ?: throw NullPointerException("JsonObject is null")
 
         val content = try {
@@ -222,7 +214,8 @@ class ReMangaSource() : Source() {
         }
 
         return MangaDetails(
-            data = data,
+            name = data.name,
+            type = data.type,
             eng_name = content.getString("en_name"),
             description = Jsoup.parse(content.getString("description")).text(),
             avg_rating = content.getString("avg_rating").toFloatOrNull(),
@@ -241,7 +234,6 @@ class ReMangaSource() : Source() {
     }
 
     override suspend fun loadChapters(
-        context: Context,
         branchId: Long
     ): List<MangaChapter> {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
@@ -251,12 +243,8 @@ class ReMangaSource() : Source() {
 
         var page = 1
         while (true) {
-            val chaptersRequest = Singleton.getInstance(context).requestQueue.getJSONObjectOrNull(
-                Request.Method.GET,
-                "https://api.$domain/api/titles/chapters/?branch_id=${branchId}&page=$page&count=100",
-                null,
-                VolleyError::printStackTrace
-            )
+            val chaptersRequest =
+                NetworkHelper.getJSONObject("https://api.$domain/api/titles/chapters/?branch_id=${branchId}&page=$page&count=100")
             chaptersRequest ?: break
             val chapters = chaptersRequest.getJSONArray("content")
             val length = chapters.length()
@@ -274,6 +262,12 @@ class ReMangaSource() : Source() {
 
         return grabChapters.mapIndexed { _, jsonObject ->
             val publishers = jsonObject.getJSONArray("publishers")
+            var publishDate: String? = null
+            try {
+                publishDate = formatter.format(dateFormat.parse(jsonObject.getString("pub_date")))
+            } catch (ignored: Exception) {
+            }
+
             MangaChapter(
                 id = jsonObject.getLong("id"),
                 name = jsonObject.getString("name"),
@@ -282,24 +276,23 @@ class ReMangaSource() : Source() {
                 date = formatter.format(dateFormat.parse(jsonObject.getString("upload_date"))),
 
                 publisher = if (publishers.length() > 0) publishers.getJSONObject(0)
-                    .getString("name") else null
+                    .getString("name") else null,
+                locked = jsonObject.getBoolean("is_paid"),
+                pub_date = publishDate
             )
         }.asReversed()
     }
 
-    override suspend fun loadPages(context: Context, chapter: MangaChapter): List<MangaPage> {
-        val jsonObject = Singleton.getInstance(context).requestQueue.getJSONObjectOrNull(
-            Request.Method.GET,
-            "https://api.$domain/api/titles/chapters/" + chapter.id,
-            null,
-            VolleyError::printStackTrace
-        )
+    override suspend fun loadPages(chapter: MangaChapter): List<MangaPage> {
+        val jsonObject =
+            NetworkHelper.getJSONObject("https://api.$domain/api/titles/chapters/" + chapter.id)
         jsonObject ?: throw NullPointerException("JsonObject is null")
 
         val list = arrayListOf<MangaPage>()
         val pageArray = jsonObject.getJSONObject("content").getJSONArray("pages")
-//        for (i in 0 until pageArray.length()) {
-        pageArray.map { js ->
+
+        //        for (i in 0 until pageArray.length()) {
+        pageArray.mapArray { js ->
             list.add(
                 MangaPage(
                     id = js.getLong("id"),
@@ -314,20 +307,20 @@ class ReMangaSource() : Source() {
         return list
     }
 
-    override suspend fun search(context: Context, query: String): List<MangaData> {
-        return loadList(context, 0, 20, query, null);
+    override suspend fun search(query: String): List<MangaData> {
+        return loadList(0, 20, query, null);
     }
 
     private suspend fun loadList(
-        context: Context, page: Int,
+        page: Int,
         count: Int, query: String?,
         sortType: SortType?
     ): List<MangaData> {
-        return loadList(context, page, count, QueryData(query), sortType, ListType.DESCENDING)
+        return loadList(page, count, QueryData(query), sortType, ListType.DESCENDING)
     }
 
     override suspend fun loadList(
-        context: Context, page: Int,
+        page: Int,
         count: Int,
         queryData: QueryData,
         sortType: SortType?,
@@ -370,13 +363,7 @@ class ReMangaSource() : Source() {
                 }
         }
 
-        val jsonObject = Singleton.getInstance(context).requestQueue.getJSONObjectOrNull(
-            Request.Method.GET,
-            urlBuilder.toString(),
-            null,
-            VolleyError::printStackTrace
-        )
-
+        val jsonObject = NetworkHelper.getJSONObject(urlBuilder.toString())
         jsonObject ?: return emptyList()
 
         return jsonObject.getJSONArray("content").map { jo ->

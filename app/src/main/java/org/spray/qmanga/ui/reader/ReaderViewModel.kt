@@ -10,7 +10,6 @@ import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.ui.base.BaseViewModel
 
 class ReaderViewModel(
-    val context: Context,
     val source: Source,
     var chapter: MangaChapter
 ) : BaseViewModel() {
@@ -20,18 +19,18 @@ class ReaderViewModel(
 
     fun loadPages() {
         job = launchLoadingJob(Dispatchers.Default) {
-            mPages.postValue(source.loadPages(context, chapter))
+            mPages.postValue(source.loadPages(chapter))
         }
     }
 
     fun loadChapters(data: MangaData) {
         job = launchLoadingJob(Dispatchers.Default) {
-            mChapters.postValue(
-                source.loadChapters(
-                    context,
-                    source.loadDetails(context, data).branchId
-                )
+            val chapters = source.loadChapters(
+                source.loadDetails(data).branchId
             )
+
+            chapters.filter { !it.locked }
+            mChapters.postValue(chapters)
         }
     }
 

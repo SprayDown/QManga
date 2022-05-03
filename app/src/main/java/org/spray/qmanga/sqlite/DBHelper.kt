@@ -27,10 +27,34 @@ class DBHelper(
                     + "$MANGA_CHAPTER_NUM text,"
                     + "$WRITE_TIME integer" + ")"
         )
+
+        // Local
+        db?.execSQL(
+            "create table $TABLE_MANGA_LOCAL ("
+                    + "$ID integer primary key autoincrement,"
+                    + "$MANGA_NAME text,"
+                    + "$MANGA_IMG text,"
+                    + "$MANGA_URL text,"
+                    + "$MANGA_RATING text,"
+                    + "$MANGA_TYPE text,"
+                    + "$MANGA_ID integer,"
+                    + "$LOCAL_PATH text,"
+                    + "$MANGA_ENG_NAME text,"
+                    + "$MANGA_DESCRIPTION text,"
+                    + "$MANGA_AVG_RATING real,"
+                    + "$MANGA_COUNT_RATING integer,"
+                    + "$MANGA_ISSUE_YEAR text,"
+                    + "$MANGA_TOTAL_VOICES integer,"
+                    + "$MANGA_TOTAL_VIEWS integer,"
+                    + "$MANGA_PREVIEW_IMG text,"
+                    + "$MANGA_STATUS text,"
+                    + "$WRITE_TIME integer" + ")"
+        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
         db?.execSQL("drop table if exists $TABLE_MANGA_RECENT")
+        db?.execSQL("drop table if exists $TABLE_MANGA_LOCAL")
 
         onCreate(db)
     }
@@ -51,7 +75,7 @@ class DBHelper(
                 }
             }
 
-        const val DB_NAME = "qmanga6"
+        const val DB_NAME = "qmanga"
         const val DB_VERSION = 1
     }
 }

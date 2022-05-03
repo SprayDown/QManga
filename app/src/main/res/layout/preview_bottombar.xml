@@ -9,7 +9,6 @@
     app:backgroundTint="?attr/toolbar_bg"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp"
-    app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
     tools:ignore="BottomAppBar">
 
     <LinearLayout

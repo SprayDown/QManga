@@ -4,22 +4,23 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.spray.qmanga.R
 import org.spray.qmanga.client.models.MangaChapter
-import org.spray.qmanga.client.models.MangaData
 import org.spray.qmanga.databinding.ItemChapterBinding
 import org.spray.qmanga.ui.base.BaseAdapter
+import org.spray.qmanga.ui.base.listener.OnChapterClickListener
 import org.spray.qmanga.ui.reader.ReaderActivity
 import kotlin.jvm.internal.Intrinsics
 
 class PreviewChaptersAdapter(
     dataSet: List<MangaChapter>,
-    val mangaData: MangaData,
-    fragmentActivity: FragmentActivity?
+    fragmentActivity: FragmentActivity?,
+    val listener: OnChapterClickListener
 ) :
     BaseAdapter<MangaChapter, PreviewChaptersAdapter.ChapterHolder>(
         dataSet, fragmentActivity
@@ -31,24 +32,13 @@ class PreviewChaptersAdapter(
         val holder = ChapterHolder(inflater)
 
         inflater.setOnClickListener {
-            val activity = fragmentActivity as AppCompatActivity
-
-            val intent = Intent(activity, ReaderActivity::class.java).apply {
-                putExtra("data", mangaData)
-                putExtra("chapter", holder.chapter)
-                putParcelableArrayListExtra("chapters", ArrayList(getDataSet()))
-            }
-            activity.startActivity(intent)
+            listener.onChapterClick(holder.chapter)
         }
         return holder
     }
 
     override fun bind(holder: ChapterHolder, chapter: MangaChapter, position: Int) {
-        holder.bind(chapter)
-    }
-
-    fun getChapter(tome: Int, number: String): MangaChapter {
-        return getDataSet().first { it.tome == tome && it.number == number }
+        holder.bind(fragmentActivity, chapter, listener)
     }
 
     class ChapterHolder(item: View) : RecyclerView.ViewHolder(item) {
@@ -56,16 +46,40 @@ class PreviewChaptersAdapter(
         lateinit var chapter: MangaChapter
 
         fun bind(
-            chapter: MangaChapter
+            activity: FragmentActivity?,
+            chapter: MangaChapter,
+            listener: OnChapterClickListener
         ) = with(binding) {
             this@ChapterHolder.chapter = chapter
             textViewTome.text = chapter.tome.toString()
             textViewNumber.text = "Глава " + chapter.number
+            if (chapter.date != null)
+                textViewDate.text = chapter.date
+
+            if (chapter.local)
+                imageViewLocal.visibility = View.VISIBLE
+
             if (chapter.publisher != null) {
                 textViewPublisher.text = chapter.publisher
                 imageViewPerson.visibility = View.VISIBLE
             }
-            textViewDate.text = chapter.date
+            if (chapter.locked) {
+                imageViewLocked.visibility = View.VISIBLE
+                imageViewDownload.visibility = View.GONE
+            }
+
+            imageViewLocked.setOnClickListener {
+                if (chapter.date != null)
+                    Toast.makeText(
+                        activity,
+                        "Глава станет бесплатной ${chapter.date}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+
+            imageViewDownload.setOnClickListener {
+                listener.onDownloadClick(chapter)
+            }
         }
     }
 

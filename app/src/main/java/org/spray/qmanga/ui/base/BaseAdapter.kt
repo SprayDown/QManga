@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapter<T, VH : RecyclerView.ViewHolder>(private var dataSet: List<T>,
+abstract class BaseAdapter<T, VH: RecyclerView.ViewHolder>(private var dataSet: List<T> = emptyList(),
                                                             val fragmentActivity: FragmentActivity?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

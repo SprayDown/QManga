@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteException
 import org.spray.qmanga.sqlite.*
-import org.spray.qmanga.sqlite.models.MangaRecent
+import org.spray.qmanga.client.models.MangaRecent
 import java.util.*
 
 class RecentQuery : BaseQuery<MangaRecent>(TABLE_MANGA_RECENT, MANGA_ID) {

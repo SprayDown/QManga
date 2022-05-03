@@ -19,6 +19,7 @@ import org.spray.qmanga.client.models.MangaData
 import org.spray.qmanga.databinding.ItemMangacardBinding
 import org.spray.qmanga.databinding.ItemMangacardGridBinding
 import org.spray.qmanga.ui.base.BaseAdapter
+import org.spray.qmanga.ui.base.listener.OnItemClickListener
 import org.spray.qmanga.ui.impl.preview.PreviewActivity
 import kotlin.jvm.internal.Intrinsics
 
@@ -27,7 +28,7 @@ open class MangaCardAdapter(
     dataSet: List<MangaData>,
     fragmentActivity: FragmentActivity?,
     private val gridMode: Boolean = false,
-    var listener: OnItemClickListener? = null
+    var listener: OnItemClickListener<MangaData>? = null
 ) :
     BaseAdapter<MangaData, MangaCardAdapter.MangaHolder>(
         dataSet, fragmentActivity
@@ -50,6 +51,17 @@ open class MangaCardAdapter(
             false
         )
         val holder = MangaHolder(view, gridMode)
+
+        view.setOnClickListener {
+            val activity = fragmentActivity as AppCompatActivity
+
+            val intent = Intent(activity, PreviewActivity::class.java).apply {
+                putExtra("manga_data", holder.data)
+            }
+            activity.startActivity(intent)
+            listener?.onItemClick(holder.data)
+        }
+
         view.setOnLongClickListener {
             listener?.onLongClick(holder.data)
             true
@@ -83,20 +95,7 @@ open class MangaCardAdapter(
                     options
                 )
             }
-
-            itemView.setOnClickListener {
-                val activity = fragmentActivity as AppCompatActivity
-
-                val intent = Intent(activity, PreviewActivity::class.java).apply {
-                    putExtra("manga_data", manga)
-                }
-                activity.startActivity(intent)
-            }
         }
-    }
-
-    interface OnItemClickListener {
-        fun onLongClick(data: MangaData)
     }
 
     override fun setDataSet(data: List<MangaData>) {

@@ -10,12 +10,13 @@ import org.spray.qmanga.R
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.databinding.ItemReaderChapterBinding
 import org.spray.qmanga.ui.base.BaseAdapter
+import org.spray.qmanga.ui.base.listener.OnItemClickListener
 
 class ReaderChapterAdapter(
     dataSet: List<MangaChapter>,
     fragmentActivity: FragmentActivity?,
     var currentChapter: MangaChapter,
-    private val listener: ReaderChapterFragment.OnItemClickListener
+    private val listener: OnItemClickListener<MangaChapter>
 ) :
     BaseAdapter<MangaChapter, ReaderChapterAdapter.ChapterHolder>(
         dataSet, fragmentActivity
@@ -38,7 +39,7 @@ class ReaderChapterAdapter(
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun bind(holder: ChapterHolder, data: MangaChapter, position: Int) {
-        if (data.tome == currentChapter.tome && data.number == currentChapter.number) {
+        if (data.equalsChapter(currentChapter)) {
             holder.binding.chapterLayout.background =
                 fragmentActivity?.getDrawable(R.drawable.selected_chapter)
         } else

@@ -1,6 +1,4 @@
-package org.spray.qmanga.sqlite.models
-
-import org.spray.qmanga.client.models.MangaData
+package org.spray.qmanga.client.models
 
 class MangaRecent(
     name: String,

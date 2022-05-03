@@ -12,8 +12,9 @@ import org.spray.qmanga.client.models.MangaData
 import org.spray.qmanga.databinding.FragmentRecentPageBinding
 import org.spray.qmanga.sqlite.QueryResponse
 import org.spray.qmanga.sqlite.WRITE_TIME
-import org.spray.qmanga.sqlite.models.MangaRecent
+import org.spray.qmanga.client.models.MangaRecent
 import org.spray.qmanga.sqlite.query.RecentQuery
+import org.spray.qmanga.ui.base.listener.OnItemClickListener
 import org.spray.qmanga.ui.fragments.ElementsUpdateListener
 import org.spray.qmanga.ui.impl.mangalist.MangaCardAdapter
 import org.spray.qmanga.utils.autoFitColumns
@@ -43,7 +44,7 @@ class RecentFragment : Fragment() {
             ArrayList(),
             requireActivity(),
             true,
-            object : MangaCardAdapter.OnItemClickListener {
+            object : OnItemClickListener<MangaData> {
                 override fun onLongClick(data: MangaData) {
                     InfoSheet().show(requireActivity()) {
                         content("Вы действительно хотите удалить мангу?")
@@ -57,6 +58,9 @@ class RecentFragment : Fragment() {
                             update()
                         }
                     }
+                }
+
+                override fun onItemClick(item: MangaData) {
                 }
             })
 

@@ -26,13 +26,13 @@ class DetailsFragment(private val details: MangaDetails) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mContext = requireContext()
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
         binding.apply {
-            textViewName.text = details.data.name
-            textViewMtype.text = details.data.type
+            textViewName.text = details.name
+            textViewMtype.text = details.type
 
             if (details.eng_name != null) {
                 textViewEnName.visibility = View.VISIBLE
@@ -76,6 +76,9 @@ class DetailsFragment(private val details: MangaDetails) : Fragment() {
                     chipGroup,
                     false
                 ) as Chip?
+                chip?.chipEndPadding = 0f
+                chip?.chipStartPadding = 0f
+                chip?.chipCornerRadius = 16f
                 chip?.text = tag.name
                 chip?.isCheckable = false
                 chipGroup.addView(chip)
