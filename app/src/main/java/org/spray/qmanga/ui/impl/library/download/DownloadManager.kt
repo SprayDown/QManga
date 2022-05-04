@@ -1,6 +1,7 @@
 package org.spray.qmanga.ui.impl.library.download
 
 import android.Manifest
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import kotlinx.coroutines.Dispatchers
@@ -43,14 +44,16 @@ class DownloadManager {
                             )
                         )
 
-                        var count = 0
-                        source.loadPages(chapter).forEach { page ->
-                            downloadFile(
-                                page.link,
-                                dir,
-                                "${page.page}-$count"
-                            )
-                            count++
+                        withContext(Dispatchers.Default) {
+                            var count = 0
+                            source.loadPages(chapter).forEach { page ->
+                                downloadFile(
+                                    page.link,
+                                    dir,
+                                    "${page.page}-$count"
+                                )
+                                count++
+                            }
                         }
 
                         send(DownloadStatus.Completed(data, chapter))
@@ -94,6 +97,7 @@ class DownloadManager {
                         )
                     }
                 }
+                Log.i("qmanga", "download finished")
                 data.path = path
                 send(DownloadStatus.Completed(data, chapter))
                 send(DownloadStatus.Finished(data, chapter))

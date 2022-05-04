@@ -1,7 +1,9 @@
 package org.spray.qmanga.ui.impl.preview.chapters
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +19,10 @@ import org.spray.qmanga.databinding.FragmentChaptersBinding
 import org.spray.qmanga.ui.base.listener.OnChapterClickListener
 import org.spray.qmanga.ui.impl.library.download.DownloadManager
 import org.spray.qmanga.ui.impl.library.download.DownloadService
+import org.spray.qmanga.ui.impl.preview.PreviewViewModel
 import org.spray.qmanga.ui.reader.ReaderActivity
 
-class PreviewChaptersFragment(val data: MangaData) : Fragment() {
+class PreviewChaptersFragment(val data: MangaData, val viewModel: PreviewViewModel) : Fragment() {
 
     private lateinit var binding: FragmentChaptersBinding
     private lateinit var mContext: Context
@@ -27,6 +30,20 @@ class PreviewChaptersFragment(val data: MangaData) : Fragment() {
     private var order = ListType.DESCENDING
 
     var adapter: PreviewChaptersAdapter? = null
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val chapterId = intent?.getLongExtra("chapter_id", -1) ?: return
+            val queued: Boolean = intent.getBooleanExtra("queued", false)
+
+            val chapter = getChapter(chapterId)
+            viewModel.onDownloadQueued(chapter, queued)
+            viewModel.onDownloadComplete(chapter)
+            getChapters()
+                .indexOf(chapter)
+                .let { itChapter -> adapter?.notifyItemChanged(itChapter) }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,10 +60,23 @@ class PreviewChaptersFragment(val data: MangaData) : Fragment() {
         adapter = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        requireActivity().registerReceiver(
+            broadcastReceiver,
+            IntentFilter(DownloadService.CHAPTER_DOWNLOAD_ACTION)
+        )
+    }
+
+    override fun onPause() {
+        requireActivity().unregisterReceiver(broadcastReceiver)
+        super.onPause()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = PreviewChaptersAdapter(ArrayList(), activity, object : OnChapterClickListener {
+        adapter = PreviewChaptersAdapter(activity, viewModel, object : OnChapterClickListener {
             override fun onChapterClick(chapter: MangaChapter) {
                 val intent = Intent(activity, ReaderActivity::class.java).apply {
                     putExtra("data", data)
@@ -69,7 +99,6 @@ class PreviewChaptersFragment(val data: MangaData) : Fragment() {
                 }
                 requireActivity().startService(intent)
             }
-
         })
 
         val linearLayoutManager =

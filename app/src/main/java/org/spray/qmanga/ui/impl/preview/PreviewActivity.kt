@@ -1,15 +1,11 @@
 package org.spray.qmanga.ui.impl.preview
 
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -43,9 +39,6 @@ import org.spray.qmanga.ui.impl.preview.details.DetailsFragment
 import org.spray.qmanga.ui.reader.ReaderActivity
 import org.spray.qmanga.utils.ext.blurRenderScript
 import org.spray.qmanga.utils.ext.forceShowBar
-import kotlin.math.roundToInt
-
-const val CHAPTER_DOWNLOADED_ACTION = "org.spray.qmanga.chapterDownloadAction"
 
 class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
 
@@ -69,16 +62,6 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
     private var chapter: MangaChapter? = null
 
     private var details: MangaDetails? = null
-
-    private val actionReceive: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            Log.i("qmanga", "received")
-            val chapterId = intent?.getLongExtra("chapter_id", -1)
-            chaptersFragment?.getChapters()
-                ?.indexOf(chapterId?.let { chaptersFragment?.getChapter(it) })
-                ?.let { chapter -> chaptersFragment?.adapter?.notifyItemChanged(chapter) }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,7 +99,7 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
             appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 val fadeAlpha = ((255 * (1.0f - verticalOffset / -appBarLayout.totalScrollRange)))
                 linearLayoutRating.alpha = fadeAlpha
-                imageViewPreview.imageAlpha = fadeAlpha.roundToInt()
+                imageViewPreview.imageAlpha = fadeAlpha.toInt()
             })
 
             collapsingToolbar.title = mangaData.name
@@ -165,13 +148,6 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
             details = it
             setDetails(it, mangaData)
         }
-
-        registerReceiver(actionReceive, IntentFilter(CHAPTER_DOWNLOADED_ACTION))
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(actionReceive)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -241,7 +217,7 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
             imageView2.visibility = View.VISIBLE
         }
 
-        chaptersFragment = PreviewChaptersFragment(data)
+        chaptersFragment = PreviewChaptersFragment(data, viewModel)
 
         val viewPager = binding.viewpager
         val pageAdapter = PageFragmentAdapter(this)

@@ -15,6 +15,9 @@ class PreviewViewModel(val source: Source, private val data: MangaData) :
     val mDetails = MutableLiveData<MangaDetails>()
     val mChapters = MutableLiveData<List<MangaChapter>>()
 
+    val localList = ArrayList<MangaChapter>()
+    val queueList = ArrayList<MangaChapter>()
+
     private var local = false
 
     init {
@@ -36,22 +39,31 @@ class PreviewViewModel(val source: Source, private val data: MangaData) :
             val localManga = LocalMangaManager.loadManga(data.hashId)
             val chapters = ArrayList(source.loadChapters(details.branchId))
 
-            val localChapters = LocalMangaManager.parseChapters(localManga?.path, data.hashId)
+            val local = LocalMangaManager.parseChapters(localManga?.path, data.hashId)
+            if (local != null) {
+                localList.clear()
+                localList.addAll(local)
+            }
 
             if (chapters.isEmpty())
-                localChapters?.let { chapters.addAll(it) }
-
-            if (localChapters?.isNotEmpty() == true)
-                localChapters.all { local ->
-                    chapters.all {
-                        if (it.equalsChapter(local))
-                            it.local = true
-                        true
-                    }
-                }
+                local?.let { chapters.addAll(it) }
 
             mChapters.postValue(chapters)
         }
+    }
+
+    fun onDownloadComplete(chapter: MangaChapter) {
+        if (!localList.contains(chapter)) {
+            localList.add(chapter)
+        }
+    }
+
+    fun onDownloadQueued(chapter: MangaChapter, queue: Boolean) {
+        val state = queue && !queueList.contains(chapter)
+        if (state)
+            queueList.add(chapter)
+        else if (!state)
+            queueList.remove(chapter)
     }
 
     private fun loadLocalDetails(hashId: Int) {

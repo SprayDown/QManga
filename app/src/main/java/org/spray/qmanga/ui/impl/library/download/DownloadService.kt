@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.view.View
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -18,13 +17,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.spray.qmanga.BuildConfig
 import org.spray.qmanga.NOTIFY_CHANNEL_ID
 import org.spray.qmanga.R
 import org.spray.qmanga.client.local.LocalMangaManager
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.client.models.MangaData
 import org.spray.qmanga.client.source.SourceManager
-import org.spray.qmanga.ui.impl.preview.CHAPTER_DOWNLOADED_ACTION
 
 class DownloadService : Service() {
 
@@ -101,11 +100,11 @@ class DownloadService : Service() {
             withContext(Dispatchers.Main) {
                 when (it) {
                     is DownloadStatus.Queued -> {
-                        val intent = Intent().apply {
+                        val intent = Intent(CHAPTER_DOWNLOAD_ACTION).apply {
                             putExtra("chapter_id", it.chapter.id)
+                            putExtra("queued", true)
                         }
-                        Log.i("qmanga", "sendBroadcast")
-                        sendBroadcast(intent, CHAPTER_DOWNLOADED_ACTION)
+                        sendBroadcast(intent)
                     }
                     is DownloadStatus.Finished -> {
                         with(builder) {
@@ -118,10 +117,11 @@ class DownloadService : Service() {
                         notifyManager.notify(1, builder.build())
                     }
                     is DownloadStatus.Completed -> {
-                        val intent = Intent().apply {
+                        val intent = Intent(CHAPTER_DOWNLOAD_ACTION).apply {
                             putExtra("chapter_id", it.chapter.id)
+                            putExtra("queued", false)
                         }
-                        sendBroadcast(intent, CHAPTER_DOWNLOADED_ACTION)
+                        sendBroadcast(intent)
                     }
                     is DownloadStatus.Error -> {
                         with(builder) {
@@ -131,6 +131,11 @@ class DownloadService : Service() {
                             setOngoing(false)
                         }
                         notifyManager.notify(1, builder.build())
+
+                        val intent = Intent(CHAPTER_DOWNLOAD_ACTION).apply {
+                            putExtra("queued", false)
+                        }
+                        sendBroadcast(intent)
                     }
                     is DownloadStatus.Progress -> {
                         with(builder) {
@@ -169,5 +174,10 @@ class DownloadService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    companion object {
+        const val CHAPTER_DOWNLOAD_ACTION =
+            "${BuildConfig.APPLICATION_ID}.action.CHAPTER_DOWNLOADED_ACTION"
     }
 }

@@ -39,8 +39,8 @@ class LocalMangaManager {
             if (path == null || path.isEmpty())
                 return null
 
-            val path = File(path)
-            if (!path.exists() || path.listFiles().isEmpty()) {
+            val filePath = File(path)
+            if (!filePath.exists() || filePath.listFiles().isEmpty()) {
                 LocalMangaQuery().delete(hashId, null)
                 return null
             }
@@ -48,16 +48,19 @@ class LocalMangaManager {
             Log.i("qmanga", "start loading chapters")
 
             val chapters = ArrayList<MangaChapter>()
-            path.listFiles().forEach { chapterFile ->
-                val split: Array<String?> = chapterFile.name.split("-").toTypedArray()
-                chapters.add(
-                    MangaChapter(
-                        split[2]?.toLongOrNull() ?: 0,
-                        String(),
-                        split[0]!!.toInt(),
-                        split[1] ?: String(),
+            filePath.listFiles().forEach { chapterFile ->
+                if (chapterFile != null) {
+                    Log.i("qmanga", chapterFile.name)
+                    val split: Array<String?> = chapterFile.name.split("-").toTypedArray()
+                    chapters.add(
+                        MangaChapter(
+                            split[2]?.toLongOrNull() ?: -1,
+                            String(),
+                            split[0]!!.toInt(),
+                            split[1] ?: String(),
+                        )
                     )
-                )
+                }
             }
             return chapters
         }

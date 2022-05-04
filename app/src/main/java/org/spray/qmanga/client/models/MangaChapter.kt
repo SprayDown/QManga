@@ -39,7 +39,7 @@ open class MangaChapter(
     }
 
     fun equalsChapter(chapter: MangaChapter): Boolean {
-        return id == chapter.id
+        return tome == chapter.tome && number == chapter.number
     }
 
     companion object CREATOR : Parcelable.Creator<MangaChapter> {
