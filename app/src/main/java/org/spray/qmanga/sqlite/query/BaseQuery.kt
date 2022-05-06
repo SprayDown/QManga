@@ -5,13 +5,13 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteException
 import android.util.Log
-import org.spray.qmanga.sqlite.DBHelper
+import org.spray.qmanga.sqlite.DatabaseHelper
 import org.spray.qmanga.sqlite.QueryResponse
 
 
 abstract class BaseQuery<T>(protected val table: String, protected val mId: String) {
 
-    protected val dbHelper = DBHelper.getInstance()
+    protected val dbHelper = DatabaseHelper.getInstance()
 
     abstract fun getContent(data: T): ContentValues
     abstract fun getData(cursor: Cursor): T

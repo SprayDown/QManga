@@ -2,11 +2,38 @@ package org.spray.qmanga.sqlite.query
 
 import android.content.ContentValues
 import android.database.Cursor
-import org.spray.qmanga.sqlite.*
+import android.database.sqlite.SQLiteDatabase
 import org.spray.qmanga.client.models.local.LocalManga
+import org.spray.qmanga.sqlite.*
 import java.util.*
 
 class LocalMangaQuery : BaseQuery<LocalManga>(TABLE_MANGA_LOCAL, MANGA_ID) {
+
+    companion object {
+        fun createTable(db: SQLiteDatabase?) {
+            db?.execSQL(
+                "create table $TABLE_MANGA_LOCAL ("
+                        + "$ID integer primary key autoincrement,"
+                        + "$MANGA_NAME text,"
+                        + "$MANGA_IMG text,"
+                        + "$MANGA_URL text,"
+                        + "$MANGA_RATING text,"
+                        + "$MANGA_TYPE text,"
+                        + "$MANGA_ID integer,"
+                        + "$LOCAL_PATH text,"
+                        + "$MANGA_ENG_NAME text,"
+                        + "$MANGA_DESCRIPTION text,"
+                        + "$MANGA_AVG_RATING real,"
+                        + "$MANGA_COUNT_RATING integer,"
+                        + "$MANGA_ISSUE_YEAR text,"
+                        + "$MANGA_TOTAL_VOICES integer,"
+                        + "$MANGA_TOTAL_VIEWS integer,"
+                        + "$MANGA_PREVIEW_IMG text,"
+                        + "$MANGA_STATUS text,"
+                        + "$WRITE_TIME integer" + ")"
+            )
+        }
+    }
 
     override fun getData(cursor: Cursor): LocalManga {
         return LocalManga(

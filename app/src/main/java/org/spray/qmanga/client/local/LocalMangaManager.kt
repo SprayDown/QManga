@@ -1,6 +1,5 @@
 package org.spray.qmanga.client.local
 
-import android.util.Log
 import org.spray.qmanga.QManga
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.client.models.MangaData
@@ -30,7 +29,16 @@ class LocalMangaManager {
             val path = File(path)
             val pages = arrayListOf<MangaPage>()
             path.listFiles().forEach {
-                pages.add(MangaPage(0, it.absolutePath, it.name.split("-")[0].toInt(), 0, 0))
+                val split = it.name.split("-").toTypedArray()
+                pages.add(
+                    MangaPage(
+                        split[2].toLongOrNull() ?: -1,
+                        it.absolutePath,
+                        split[0].toInt(),
+                        0,
+                        0
+                    )
+                )
             }
             return pages
         }
@@ -45,21 +53,20 @@ class LocalMangaManager {
                 return null
             }
 
-            Log.i("qmanga", "start loading chapters")
-
             val chapters = ArrayList<MangaChapter>()
             filePath.listFiles().forEach { chapterFile ->
                 if (chapterFile != null) {
-                    Log.i("qmanga", chapterFile.name)
                     val split: Array<String?> = chapterFile.name.split("-").toTypedArray()
-                    chapters.add(
-                        MangaChapter(
-                            split[2]?.toLongOrNull() ?: -1,
-                            String(),
-                            split[0]!!.toInt(),
-                            split[1] ?: String(),
+                    if (split.size >= 3)
+                        chapters.add(
+                            MangaChapter(
+                                split[2]?.toLongOrNull() ?: -1,
+                                String(),
+                                split[0]!!.toInt(),
+                                split[1] ?: String(),
+                                localPath = chapterFile.absolutePath
+                            )
                         )
-                    )
                 }
             }
             return chapters

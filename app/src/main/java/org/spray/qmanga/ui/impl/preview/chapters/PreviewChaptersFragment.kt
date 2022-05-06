@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.spray.qmanga.R
 import org.spray.qmanga.client.models.ListType
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.client.models.MangaData
@@ -33,12 +31,19 @@ class PreviewChaptersFragment(val data: MangaData, val viewModel: PreviewViewMod
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            val chapterId = intent?.getLongExtra("chapter_id", -1) ?: return
-            val queued: Boolean = intent.getBooleanExtra("queued", false)
+            val queued: Boolean? = intent?.getBooleanExtra("queued", false)
+            val chapterId = intent?.getLongExtra("chapter_id", -1)
 
+            if (queued != null)
+                viewModel.onDownloadQueued(chapterId?.let { getChapter(it) }, queued)
+
+            chapterId ?: return
+
+            val downloaded = intent.getBooleanExtra("downloaded", false)
             val chapter = getChapter(chapterId)
-            viewModel.onDownloadQueued(chapter, queued)
-            viewModel.onDownloadComplete(chapter)
+            if (chapter != null && downloaded)
+                viewModel.onDownloadComplete(chapter)
+
             getChapters()
                 .indexOf(chapter)
                 .let { itChapter -> adapter?.notifyItemChanged(itChapter) }
@@ -78,6 +83,9 @@ class PreviewChaptersFragment(val data: MangaData, val viewModel: PreviewViewMod
 
         adapter = PreviewChaptersAdapter(activity, viewModel, object : OnChapterClickListener {
             override fun onChapterClick(chapter: MangaChapter) {
+                if (chapter.locked)
+                    return
+
                 val intent = Intent(activity, ReaderActivity::class.java).apply {
                     putExtra("data", data)
                     putExtra("chapter", chapter)
@@ -125,17 +133,17 @@ class PreviewChaptersFragment(val data: MangaData, val viewModel: PreviewViewMod
             }
 
             recyclerView.layoutManager = linearLayoutManager
-            val itemDecoration =
+/*            val itemDecoration =
                 DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
             itemDecoration.setDrawable(activity?.getDrawable(R.drawable.divider_line)!!)
-            recyclerView.addItemDecoration(itemDecoration)
+            recyclerView.addItemDecoration(itemDecoration)*/
 
             recyclerView.adapter = adapter
         }
     }
 
-    fun getChapter(id: Long): MangaChapter {
-        return getChapters().first { it.id == id }
+    fun getChapter(id: Long): MangaChapter? {
+        return getChapters().firstOrNull { it.id == id }
     }
 
     fun getChapters(): List<MangaChapter> {

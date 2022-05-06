@@ -12,7 +12,9 @@ open class MangaChapter(
     val publisher: String? = null,
     val locked: Boolean = false,
     var local: Boolean = false,
-    val pub_date: String? = null
+    val pub_date: String? = null,
+    var localPath: String? = null,
+    var read: Boolean = false
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -39,7 +41,7 @@ open class MangaChapter(
     }
 
     fun equalsChapter(chapter: MangaChapter): Boolean {
-        return tome == chapter.tome && number == chapter.number
+        return id == chapter.id
     }
 
     companion object CREATOR : Parcelable.Creator<MangaChapter> {

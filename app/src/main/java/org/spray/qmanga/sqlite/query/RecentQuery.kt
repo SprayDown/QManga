@@ -2,12 +2,32 @@ package org.spray.qmanga.sqlite.query
 
 import android.content.ContentValues
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
-import org.spray.qmanga.sqlite.*
 import org.spray.qmanga.client.models.MangaRecent
+import org.spray.qmanga.sqlite.*
 import java.util.*
 
 class RecentQuery : BaseQuery<MangaRecent>(TABLE_MANGA_RECENT, MANGA_ID) {
+
+    companion object {
+        fun createTable(db: SQLiteDatabase?) {
+            db?.execSQL(
+                "create table $TABLE_MANGA_RECENT ("
+                        + "$ID integer primary key autoincrement,"
+                        + "$MANGA_NAME text,"
+                        + "$MANGA_IMG text,"
+                        + "$MANGA_URL text,"
+                        + "$MANGA_RATING text,"
+                        + "$MANGA_TYPE text,"
+                        + "$MANGA_ID integer,"
+                        + "$MANGA_CHAPTER_ID text,"
+                        + "$MANGA_CHAPTER_TOME integer,"
+                        + "$MANGA_CHAPTER_NUM text,"
+                        + "$WRITE_TIME integer" + ")"
+            )
+        }
+    }
 
     override fun getData(cursor: Cursor): MangaRecent {
         return MangaRecent(

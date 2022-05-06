@@ -86,6 +86,10 @@ class HomeFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        update()
+    }
     override fun createView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -93,18 +97,11 @@ class HomeFragment : BaseFragment() {
         mContext = requireContext()
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        update()
-
         with(binding) {
             popularView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             newestView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-            swipeRefreshLayout.setOnRefreshListener {
-                update()
-                swipeRefreshLayout.isRefreshing = false
-            }
 
             popularView.adapter = popularAdapter
             newestView.adapter = newestAdapter

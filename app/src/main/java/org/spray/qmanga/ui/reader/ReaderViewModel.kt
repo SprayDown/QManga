@@ -1,8 +1,8 @@
 package org.spray.qmanga.ui.reader
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
+import org.spray.qmanga.client.local.LocalMangaManager
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.client.models.MangaData
 import org.spray.qmanga.client.models.MangaPage
@@ -19,7 +19,15 @@ class ReaderViewModel(
 
     fun loadPages() {
         job = launchLoadingJob(Dispatchers.Default) {
-            mPages.postValue(source.loadPages(chapter))
+            var pages = source.loadPages(chapter)
+            if (chapter.localPath != null) {
+                val local = LocalMangaManager.parsePages(chapter.localPath!!)
+
+                if (pages.isEmpty())
+                    pages = local
+            }
+
+            mPages.postValue(pages)
         }
     }
 

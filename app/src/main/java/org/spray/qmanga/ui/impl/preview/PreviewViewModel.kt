@@ -7,9 +7,12 @@ import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.client.models.MangaData
 import org.spray.qmanga.client.models.MangaDetails
 import org.spray.qmanga.client.source.Source
+import org.spray.qmanga.sqlite.QueryResponse
+import org.spray.qmanga.sqlite.query.ChapterQuery
 import org.spray.qmanga.ui.base.BaseViewModel
+import org.spray.qmanga.ui.impl.library.download.DownloadService
 
-class PreviewViewModel(val source: Source, private val data: MangaData) :
+class PreviewViewModel(val source: Source, val data: MangaData) :
     BaseViewModel() {
 
     val mDetails = MutableLiveData<MangaDetails>()
@@ -17,8 +20,6 @@ class PreviewViewModel(val source: Source, private val data: MangaData) :
 
     val localList = ArrayList<MangaChapter>()
     val queueList = ArrayList<MangaChapter>()
-
-    private var local = false
 
     init {
         loadDetails()
@@ -45,8 +46,29 @@ class PreviewViewModel(val source: Source, private val data: MangaData) :
                 localList.addAll(local)
             }
 
+            queueList.addAll(DownloadService.queued.filterKeys { it == data.hashId }.values.filter {
+                !queueList.contains(it)
+            })
+
             if (chapters.isEmpty())
                 local?.let { chapters.addAll(it) }
+
+            val query = ChapterQuery(data.hashId)
+            query.readMangaChapters(data.hashId, object : QueryResponse<List<MangaChapter>> {
+                override fun onSuccess(data: List<MangaChapter>) {
+                    data.forEach {
+                        chapters.forEach { chapter ->
+                            if (chapter.equalsChapter(it)) {
+                                chapter.read = it.read
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(msg: String) {
+                }
+
+            })
 
             mChapters.postValue(chapters)
         }
@@ -58,16 +80,15 @@ class PreviewViewModel(val source: Source, private val data: MangaData) :
         }
     }
 
-    fun onDownloadQueued(chapter: MangaChapter, queue: Boolean) {
+    fun onDownloadQueued(chapter: MangaChapter?, queue: Boolean) {
         val state = queue && !queueList.contains(chapter)
         if (state)
-            queueList.add(chapter)
+            chapter?.let { queueList.add(it) }
         else if (!state)
-            queueList.remove(chapter)
+            queueList.clear()
     }
 
     private fun loadLocalDetails(hashId: Int) {
-        local = true
         mDetails.postValue(LocalMangaManager.loadDetails(hashId))
     }
 }

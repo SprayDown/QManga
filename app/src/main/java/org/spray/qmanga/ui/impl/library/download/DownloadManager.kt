@@ -50,7 +50,7 @@ class DownloadManager {
                                 downloadFile(
                                     page.link,
                                     dir,
-                                    "${page.page}-$count"
+                                    "${page.page}-$count-${page.id}"
                                 )
                                 count++
                             }
@@ -60,8 +60,8 @@ class DownloadManager {
                     }
                 }
                 data.path = path
-                send(DownloadStatus.Finished(data, null))
                 LocalMangaQuery().createOrUpdate(data, data.hashId, null)
+                send(DownloadStatus.Finished(data, null))
             } catch (e: Exception) {
                 send(DownloadStatus.Error(e.message.toString()))
                 return@channelFlow
@@ -100,8 +100,8 @@ class DownloadManager {
                 Log.i("qmanga", "download finished")
                 data.path = path
                 send(DownloadStatus.Completed(data, chapter))
-                send(DownloadStatus.Finished(data, chapter))
                 LocalMangaQuery().createOrUpdate(data, data.hashId, null)
+                send(DownloadStatus.Finished(data, chapter))
             } catch (e: Exception) {
                 send(DownloadStatus.Error(e.message.toString()))
                 return@channelFlow

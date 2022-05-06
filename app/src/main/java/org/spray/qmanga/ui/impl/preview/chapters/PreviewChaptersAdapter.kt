@@ -3,6 +3,8 @@ package org.spray.qmanga.ui.impl.preview.chapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
@@ -10,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.spray.qmanga.R
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.databinding.ItemChapterBinding
+import org.spray.qmanga.sqlite.query.ChapterQuery
 import org.spray.qmanga.ui.base.BaseAdapter
 import org.spray.qmanga.ui.base.listener.OnChapterClickListener
 import org.spray.qmanga.ui.impl.preview.PreviewViewModel
 import kotlin.jvm.internal.Intrinsics
+
 
 class PreviewChaptersAdapter(
     fragmentActivity: FragmentActivity?,
@@ -23,6 +27,8 @@ class PreviewChaptersAdapter(
     BaseAdapter<MangaChapter, PreviewChaptersAdapter.ChapterHolder>(
         ArrayList(), fragmentActivity
     ) {
+
+    val query = ChapterQuery(viewModel.data.hashId)
 
     override fun createVH(parent: ViewGroup, viewType: Int): ChapterHolder {
         val inflater =
@@ -37,20 +43,40 @@ class PreviewChaptersAdapter(
     }
 
     override fun bind(holder: ChapterHolder, chapter: MangaChapter, position: Int) {
-        holder.bind(fragmentActivity, chapter, listener)
+        holder.bind(fragmentActivity, chapter, query, listener)
 
         fragmentActivity ?: return
-        holder.binding.imageViewLocal.visibility =
-            if (viewModel.localList.contains(chapter)) View.VISIBLE else View.GONE
-        holder.binding.imageViewRefresh.visibility =
-            if (viewModel.localList.contains(chapter)) View.VISIBLE else View.GONE
 
-        if (viewModel.queueList.contains(chapter)) {
-            holder.binding.imageViewDownload.visibility = View.GONE
-            holder.binding.progressBar.visibility = View.VISIBLE
-        } else {
-            holder.binding.imageViewDownload.visibility = View.VISIBLE
-            holder.binding.progressBar.visibility = View.GONE
+        with(holder.binding) {
+            imageViewLocal.visibility =
+                if (viewModel.localList.contains(chapter)) View.VISIBLE else View.GONE
+            imageViewRefresh.visibility =
+                if (viewModel.localList.contains(chapter)) View.VISIBLE else View.GONE
+
+            if (viewModel.queueList.firstOrNull { it.equalsChapter(chapter) } != null) {
+                imageViewDownload.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+            } else {
+                imageViewDownload.visibility =
+                    if (!(chapter.locked || viewModel.localList.contains(chapter))) View.VISIBLE else View.GONE
+                progressBar.visibility = View.GONE
+            }
+
+            imageViewViewed.setOnClickListener {
+                chapter.read = !chapter.read
+
+                val fadeIn = AlphaAnimation(0f, 1f)
+                fadeIn.interpolator = DecelerateInterpolator()
+                fadeIn.duration = 500
+
+                imageViewViewed.animation = fadeIn
+                imageViewViewed.setImageResource(
+                    if (chapter.read) R.drawable.ic_baseline_visibility_24
+                    else R.drawable.ic_baseline_visibility_off_24
+                )
+
+                query.createOrUpdate(chapter, chapter.id.toInt(), null)
+            }
         }
     }
 
@@ -61,11 +87,11 @@ class PreviewChaptersAdapter(
         fun bind(
             activity: FragmentActivity?,
             chapter: MangaChapter,
+            query: ChapterQuery,
             listener: OnChapterClickListener
         ) = with(binding) {
             this@ChapterHolder.chapter = chapter
-            textViewTome.text = chapter.tome.toString()
-            textViewNumber.text = "Глава " + chapter.number
+            textViewNumber.text = "Том ${chapter.tome} Глава ${chapter.number}"
             if (chapter.date != null)
                 textViewDate.text = chapter.date
 
@@ -75,17 +101,20 @@ class PreviewChaptersAdapter(
             }
 
             imageViewLocked.visibility = if (chapter.locked) View.VISIBLE else View.GONE
-            imageViewDownload.visibility = if (chapter.locked) View.GONE else View.VISIBLE
 
             imageViewLocked.setOnClickListener {
-                if (chapter.date != null)
+                if (chapter.pub_date != null)
                     Toast.makeText(
                         activity,
-                        "Глава станет бесплатной ${chapter.date}",
+                        "Глава станет бесплатной ${chapter.pub_date}",
                         Toast.LENGTH_SHORT
                     ).show()
             }
 
+            imageViewViewed.setImageResource(
+                if (chapter.read) R.drawable.ic_baseline_visibility_24
+                else R.drawable.ic_baseline_visibility_off_24
+            )
             imageViewDownload.setOnClickListener { listener.onDownloadClick(chapter) }
             imageViewRefresh.setOnClickListener { listener.onDownloadClick(chapter) }
         }

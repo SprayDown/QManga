@@ -13,11 +13,12 @@ import com.google.android.material.appbar.AppBarLayout
 import org.spray.qmanga.R
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.client.models.MangaData
+import org.spray.qmanga.client.models.MangaRecent
 import org.spray.qmanga.client.models.MangaSource
 import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.client.source.SourceManager
 import org.spray.qmanga.databinding.ReaderChapterBinding
-import org.spray.qmanga.client.models.MangaRecent
+import org.spray.qmanga.sqlite.query.ChapterQuery
 import org.spray.qmanga.sqlite.query.RecentQuery
 import org.spray.qmanga.ui.base.BaseActivity
 import org.spray.qmanga.ui.reader.chapters.ReaderChapterFragment
@@ -35,9 +36,12 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
     private lateinit var toolbar: Toolbar
 
     private var chapters: ArrayList<MangaChapter>? = null
-    private var data: MangaData? = null
+    private var mangaData: MangaData? = null
 
-    val query = RecentQuery()
+    private val recentQuery = RecentQuery()
+    lateinit var chapterQuery: ChapterQuery
+
+    var read = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +58,8 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
 
-        data = intent.getParcelableExtra<MangaData>("data") as MangaData
+        mangaData = intent.getParcelableExtra("data")
+        chapterQuery = mangaData?.hashId?.let { ChapterQuery(it) }!!
 
         chapter = intent.getParcelableExtra<MangaChapter>("chapter") as MangaChapter
 
@@ -67,9 +72,9 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
             ViewModelProvider(this, ReaderViewFactory(source, chapter))
                 .get(ReaderViewModel::class.java)
 
-        if (chapters == null) {
+        if (chapters == null && mangaData != null) {
             binding.textViewLoading.visibility = View.VISIBLE
-            viewModel.loadChapters(data!!)
+            viewModel.loadChapters(mangaData!!)
         }
 
         binding.apply {
@@ -83,10 +88,17 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 @SuppressLint("SetTextI18n")
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    bottomBar.textViewPage.text =
+                    val currentPage =
                         adapter.getDataSet()[(binding.recyclerView.layoutManager as LinearLayoutManager)
-                            .findLastVisibleItemPosition()].page.toString() + "/" + adapter.getDataSet()
-                            .last().page.toString()
+                            .findLastVisibleItemPosition()].page
+                    val lastPage = adapter.getDataSet()
+                        .last().page
+
+                    bottomBar.textViewPage.text = "$currentPage/$lastPage"
+
+                    if (currentPage >= lastPage - 1)
+                        read = true
+
                     super.onScrolled(recyclerView, dx, dy)
                 }
 
@@ -128,11 +140,9 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
 
     override fun onPause() {
         super.onPause()
-        updateRecent()
-    }
+        if (read)
+            chapterQuery.createOrUpdate(chapter, chapter.id.toInt(), null)
 
-    override fun onDestroy() {
-        super.onDestroy()
         updateRecent()
     }
 
@@ -181,10 +191,9 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
     }
 
     private fun addRecent(mData: MangaRecent) {
-        query.createOrUpdate(mData, mData.hashId, null)
+        recentQuery.createOrUpdate(mData, mData.hashId, null)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun updateChapter(chapter: MangaChapter) {
         viewModel.chapter = chapter
         viewModel.loadPages()
@@ -199,7 +208,7 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
     }
 
     private fun updateRecent() {
-        data?.let {
+        mangaData?.let {
             addRecent(
                 MangaRecent(
                     name = it.name,
@@ -207,7 +216,7 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
                     url = it.url,
                     type = it.type,
                     rating = it.rating,
-                    id = query.getId(it.hashId).toLong(),
+                    id = recentQuery.getId(it.hashId).toLong(),
                     position = 0,
                     chapterId = chapter.id,
                     chapterTome = chapter.tome,

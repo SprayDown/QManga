@@ -31,6 +31,8 @@ class DownloadService : Service() {
     private val builder =
         NotificationCompat.Builder(this, NOTIFY_CHANNEL_ID)
 
+    private var data: MangaData? = null
+
     private val options: DisplayImageOptions = DisplayImageOptions.Builder()
         .showImageOnLoading(null)
         .resetViewBeforeLoading(true)
@@ -47,10 +49,16 @@ class DownloadService : Service() {
         val mangaData = bundle?.getParcelable<MangaData>("manga_data")
 
         return if (mangaData != null) {
+            data = mangaData
             start(bundle, mangaData)
-            START_REDELIVER_INTENT
+            START_NOT_STICKY
 
         } else START_NOT_STICKY
+    }
+
+    override fun onDestroy() {
+        queued.clear()
+        super.onDestroy()
     }
 
     private fun start(bundle: Bundle?, mangaData: MangaData) {
@@ -100,11 +108,13 @@ class DownloadService : Service() {
             withContext(Dispatchers.Main) {
                 when (it) {
                     is DownloadStatus.Queued -> {
+                        builder.setContentTitle(data?.name)
                         val intent = Intent(CHAPTER_DOWNLOAD_ACTION).apply {
                             putExtra("chapter_id", it.chapter.id)
                             putExtra("queued", true)
                         }
                         sendBroadcast(intent)
+                        queued[it.data.hashId] = it.chapter
                     }
                     is DownloadStatus.Finished -> {
                         with(builder) {
@@ -115,13 +125,16 @@ class DownloadService : Service() {
                             setOngoing(false)
                         }
                         notifyManager.notify(1, builder.build())
+                        queued.remove(it.data.hashId)
                     }
                     is DownloadStatus.Completed -> {
                         val intent = Intent(CHAPTER_DOWNLOAD_ACTION).apply {
                             putExtra("chapter_id", it.chapter.id)
                             putExtra("queued", false)
+                            putExtra("downloaded", true)
                         }
                         sendBroadcast(intent)
+                        queued.values.remove(it.chapter)
                     }
                     is DownloadStatus.Error -> {
                         with(builder) {
@@ -131,7 +144,7 @@ class DownloadService : Service() {
                             setOngoing(false)
                         }
                         notifyManager.notify(1, builder.build())
-
+                        queued.clear()
                         val intent = Intent(CHAPTER_DOWNLOAD_ACTION).apply {
                             putExtra("queued", false)
                         }
@@ -179,5 +192,7 @@ class DownloadService : Service() {
     companion object {
         const val CHAPTER_DOWNLOAD_ACTION =
             "${BuildConfig.APPLICATION_ID}.action.CHAPTER_DOWNLOADED_ACTION"
+
+        val queued = hashMapOf<Int, MangaChapter>()
     }
 }

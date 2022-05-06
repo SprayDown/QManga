@@ -3,6 +3,7 @@ package org.spray.qmanga.sqlite
 const val TABLE_MANGA = "manga"
 const val TABLE_MANGA_RECENT = "manga_recent"
 const val TABLE_MANGA_LOCAL = "manga_local"
+const val TABLE_MANGA_CHAPTERS = "manga_chapters"
 
 const val MANGA_ID = "hash_id"
 const val MANGA_NAME = "name"
@@ -22,9 +23,13 @@ const val MANGA_ISSUE_YEAR = "issue_year"
 const val MANGA_TOTAL_VOICES = "total_voices"
 const val MANGA_TOTAL_VIEWS = "total_views"
 const val MANGA_PREVIEW_IMG = "preview_img"
+
 const val MANGA_CHAPTER_ID = "chapter_id"
+const val MANGA_CHAPTER_NAME = "chapter_name"
 const val MANGA_CHAPTER_TOME = "chapter_tome"
 const val MANGA_CHAPTER_NUM = "chapter_num"
+const val MANGA_CHAPTER_READ = "chapter_read"
+
 
 const val LOCAL_PATH = "path"
 
