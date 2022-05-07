@@ -90,13 +90,13 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val currentPage =
                         adapter.getDataSet()[(binding.recyclerView.layoutManager as LinearLayoutManager)
-                            .findLastVisibleItemPosition()].page
+                            .findFirstVisibleItemPosition()].page
                     val lastPage = adapter.getDataSet()
                         .last().page
 
                     bottomBar.textViewPage.text = "$currentPage/$lastPage"
 
-                    if (currentPage >= lastPage - 1)
+                    if (currentPage >= lastPage)
                         read = true
 
                     super.onScrolled(recyclerView, dx, dy)
@@ -138,10 +138,17 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        read = false
+    }
+
     override fun onPause() {
         super.onPause()
-        if (read)
+        if (read) {
+            chapter.read = true
             chapterQuery.createOrUpdate(chapter, chapter.id.toInt(), null)
+        }
 
         updateRecent()
     }

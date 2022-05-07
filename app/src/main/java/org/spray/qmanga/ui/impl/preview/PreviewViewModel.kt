@@ -17,6 +17,7 @@ class PreviewViewModel(val source: Source, val data: MangaData) :
 
     val mDetails = MutableLiveData<MangaDetails>()
     val mChapters = MutableLiveData<List<MangaChapter>>()
+    val mSimilar = MutableLiveData<List<MangaData>>()
 
     val localList = ArrayList<MangaChapter>()
     val queueList = ArrayList<MangaChapter>()
@@ -32,6 +33,12 @@ class PreviewViewModel(val source: Source, val data: MangaData) :
             } catch (e: Exception) {
                 loadLocalDetails(data.hashId)
             }
+        }
+    }
+
+    fun loadSimilar() {
+        launchJob(Dispatchers.Default) {
+            mSimilar.postValue(source.loadSimilar(data.url))
         }
     }
 

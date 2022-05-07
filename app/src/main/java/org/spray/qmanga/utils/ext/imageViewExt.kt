@@ -1,6 +1,7 @@
 package org.spray.qmanga.utils.ext
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.renderscript.Allocation
 import android.renderscript.Element
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.widget.ImageViewCompat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 
 

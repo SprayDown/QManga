@@ -3,6 +3,7 @@
     <declare-styleable name="tm">
         <attr name="bgc" format="color"/>
         <attr name="bg_element" format="color"/>
+        <attr name="bg_internal" format="color"/>
         <attr name="tc" format="color"/>
         <attr name="toolbar_bg" format="color"/>
         <attr name="colorControlNormal" format="color"/>

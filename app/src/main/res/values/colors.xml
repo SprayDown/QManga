@@ -23,5 +23,10 @@
     <color name="dark_bg_element">#FF141414</color>
     <color name="light_bg_element">#FFE3E3E3</color>
 
+    <color name="dark_bg_internal">#FF1D1D1D</color>
+    <color name="light_bg_internal">#FFD0D0D0</color>
+
+    <color name="green_touch">#FF16BC35</color>
+
     <color name="colorControlHighlight">#59F1F1F1</color>
 </resources>

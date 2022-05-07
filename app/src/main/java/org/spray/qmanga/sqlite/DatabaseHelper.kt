@@ -12,7 +12,6 @@ class DatabaseHelper(
     context: Context
 ) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
-
     override fun onCreate(db: SQLiteDatabase?) {
         RecentQuery.createTable(db)
         LocalMangaQuery.createTable(db)

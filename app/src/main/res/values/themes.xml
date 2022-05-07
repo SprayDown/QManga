@@ -14,6 +14,7 @@
         <item name="tc">@color/black_tx</item>
         <item name="bg_element">@color/light_bg_element</item>
         <item name="toolbar_bg">@color/light_nav</item>
+        <item name="bg_internal">@color/light_bg_element</item>
 
         <item name="android:editTextColor">@color/black_tx</item>
         <!-- Hint text color -->
@@ -49,6 +50,7 @@
         <item name="tc">@color/white_tx</item>
         <item name="bg_element">@color/dark_bg_element</item>
         <item name="toolbar_bg">@color/dark_nav</item>
+        <item name="bg_internal">@color/dark_bg_element</item>
 
         <item name="android:editTextColor">@color/white_tx</item>
         <!-- Hint text color -->

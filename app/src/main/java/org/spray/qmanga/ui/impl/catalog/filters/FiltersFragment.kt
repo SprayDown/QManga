@@ -35,7 +35,6 @@ class FiltersFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         queryData = args.queryData
 
         parentFragmentManager.setFragmentResultListener("parent_filters_key", this) { _, bundle ->

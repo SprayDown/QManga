@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.DecelerateInterpolator
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -42,28 +41,28 @@ class PreviewChaptersAdapter(
         return holder
     }
 
-    override fun bind(holder: ChapterHolder, chapter: MangaChapter, position: Int) {
-        holder.bind(fragmentActivity, chapter, query, listener)
+    override fun bind(holder: ChapterHolder, data: MangaChapter, position: Int) {
+        holder.bind(data, listener)
 
         fragmentActivity ?: return
 
         with(holder.binding) {
             imageViewLocal.visibility =
-                if (viewModel.localList.contains(chapter)) View.VISIBLE else View.GONE
+                if (viewModel.localList.contains(data)) View.VISIBLE else View.GONE
             imageViewRefresh.visibility =
-                if (viewModel.localList.contains(chapter)) View.VISIBLE else View.GONE
+                if (viewModel.localList.contains(data)) View.VISIBLE else View.GONE
 
-            if (viewModel.queueList.firstOrNull { it.equalsChapter(chapter) } != null) {
+            if (viewModel.queueList.firstOrNull { it.equalsChapter(data) } != null) {
                 imageViewDownload.visibility = View.GONE
                 progressBar.visibility = View.VISIBLE
             } else {
                 imageViewDownload.visibility =
-                    if (!(chapter.locked || viewModel.localList.contains(chapter))) View.VISIBLE else View.GONE
+                    if (!(data.locked || viewModel.localList.contains(data))) View.VISIBLE else View.GONE
                 progressBar.visibility = View.GONE
             }
 
             imageViewViewed.setOnClickListener {
-                chapter.read = !chapter.read
+                data.read = !data.read
 
                 val fadeIn = AlphaAnimation(0f, 1f)
                 fadeIn.interpolator = DecelerateInterpolator()
@@ -71,11 +70,12 @@ class PreviewChaptersAdapter(
 
                 imageViewViewed.animation = fadeIn
                 imageViewViewed.setImageResource(
-                    if (chapter.read) R.drawable.ic_baseline_visibility_24
+                    if (data.read) R.drawable.ic_baseline_visibility_24
                     else R.drawable.ic_baseline_visibility_off_24
                 )
+                notifyItemChanged(position)
 
-                query.createOrUpdate(chapter, chapter.id.toInt(), null)
+                query.createOrUpdate(data, data.id.toInt(), null)
             }
         }
     }
@@ -85,12 +85,12 @@ class PreviewChaptersAdapter(
         lateinit var chapter: MangaChapter
 
         fun bind(
-            activity: FragmentActivity?,
             chapter: MangaChapter,
-            query: ChapterQuery,
             listener: OnChapterClickListener
         ) = with(binding) {
             this@ChapterHolder.chapter = chapter
+
+            textViewNumber.alpha = if (chapter.read) 0.5f else 1f
             textViewNumber.text = "Том ${chapter.tome} Глава ${chapter.number}"
             if (chapter.date != null)
                 textViewDate.text = chapter.date
@@ -101,15 +101,6 @@ class PreviewChaptersAdapter(
             }
 
             imageViewLocked.visibility = if (chapter.locked) View.VISIBLE else View.GONE
-
-            imageViewLocked.setOnClickListener {
-                if (chapter.pub_date != null)
-                    Toast.makeText(
-                        activity,
-                        "Глава станет бесплатной ${chapter.pub_date}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-            }
 
             imageViewViewed.setImageResource(
                 if (chapter.read) R.drawable.ic_baseline_visibility_24

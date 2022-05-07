@@ -10,7 +10,6 @@ import org.spray.qmanga.utils.ext.map
 import org.spray.qmanga.utils.ext.mapArray
 import org.spray.qmanga.utils.ext.mapToSet
 import java.net.URLEncoder
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -192,6 +191,28 @@ class ReMangaSource() : Source() {
                 MangaTag("Эльфы", 46)
             )
         )
+    }
+
+    override suspend fun loadSimilar(dir: String): List<MangaData> {
+        val url = "https://api.$domain/api/titles/$dir/similar"
+        val jsonObject = NetworkHelper.getJSONObject(url)
+        jsonObject ?: return emptyList()
+
+        return jsonObject.getJSONArray("content").map { jo ->
+            val url = jo.getString("dir")
+            val img = jo.getJSONObject("img")
+
+            val imageUrl = jo.getString("cover_mid") ?: img.getString("low")
+            val media = if (imageUrl != null) "/media/" else String()
+
+            MangaData(
+                name = jo.getString("rus_name"),
+                url = url,
+                rating = jo.getString("avg_rating"),
+                imageUrl = "https://api.$domain$media$imageUrl",
+                type = jo.getString("type")
+            )
+        }
     }
 
     override suspend fun loadPopular(): List<MangaData> {

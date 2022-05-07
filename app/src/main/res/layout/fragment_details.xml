@@ -9,8 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
+        android:layout_height="match_parent"
         android:background="?attr/bgc"
         android:paddingBottom="@dimen/bottom_nav_height">
 
@@ -40,7 +39,7 @@
             android:gravity="center_horizontal"
             android:text="@string/empty"
             android:textColor="?attr/tc"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -119,6 +118,7 @@
             android:id="@+id/layout_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mdetails_layout" />
@@ -127,28 +127,17 @@
             android:id="@+id/layout_info_answers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginStart="20dp"
             android:orientation="vertical"
             app:layout_constraintStart_toEndOf="@+id/layout_info"
             app:layout_constraintTop_toBottomOf="@+id/mdetails_layout" />
 
         <TextView
-            android:id="@+id/textView_descHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/nunito_sans_bold"
-            android:text="@string/description"
-            android:textColor="?attr/tc"
-            android:textSize="17sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_info_answers" />
-
-        <TextView
             android:id="@+id/textView_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="7dp"
             android:fontFamily="@font/nunito_sans_bold"
             android:lineSpacingExtra="3dp"
@@ -157,18 +146,52 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_descHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_info_answers" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="6dp"
             android:layout_marginTop="12dp"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:paddingBottom="6dp"
             app:chipSpacingVertical="-7dp"
             app:layout_constraintTop_toBottomOf="@+id/textView_desc" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="?attr/bg_internal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+
+        <TextView
+            android:id="@id/textView_similar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/similar"
+            android:textColor="?attr/tc"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/similarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_similar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

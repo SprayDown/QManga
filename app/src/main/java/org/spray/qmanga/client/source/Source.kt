@@ -18,6 +18,10 @@ abstract class Source() {
         throw UnsupportedOperationException("Source ($domain) does not support 'Newest' mangas")
     }
 
+    open suspend fun loadSimilar(dir: String): List<MangaData> {
+        throw UnsupportedOperationException("Source ($domain) does not support 'Similar' mangas")
+    }
+
     abstract suspend fun search(query: String): List<MangaData>
     abstract suspend fun loadDetails(data: MangaData): MangaDetails
     abstract suspend fun loadPages(chapter: MangaChapter): List<MangaPage>

@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.spray.qmanga.client.models.ListType
 import org.spray.qmanga.client.models.MangaChapter
@@ -20,7 +22,8 @@ import org.spray.qmanga.ui.impl.library.download.DownloadService
 import org.spray.qmanga.ui.impl.preview.PreviewViewModel
 import org.spray.qmanga.ui.reader.ReaderActivity
 
-class PreviewChaptersFragment(val data: MangaData, val viewModel: PreviewViewModel) : Fragment() {
+class PreviewChaptersFragment(val mangaData: MangaData, val viewModel: PreviewViewModel) :
+    Fragment() {
 
     private lateinit var binding: FragmentChaptersBinding
     private lateinit var mContext: Context
@@ -83,11 +86,18 @@ class PreviewChaptersFragment(val data: MangaData, val viewModel: PreviewViewMod
 
         adapter = PreviewChaptersAdapter(activity, viewModel, object : OnChapterClickListener {
             override fun onChapterClick(chapter: MangaChapter) {
-                if (chapter.locked)
+                if (chapter.locked) {
+                    if (chapter.pub_date != null)
+                        Toast.makeText(
+                            activity,
+                            "Глава станет бесплатной ${chapter.pub_date}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     return
+                }
 
                 val intent = Intent(activity, ReaderActivity::class.java).apply {
-                    putExtra("data", data)
+                    putExtra("data", mangaData)
                     putExtra("chapter", chapter)
                     putParcelableArrayListExtra("chapters", ArrayList(adapter?.getDataSet()))
                 }
@@ -99,7 +109,7 @@ class PreviewChaptersFragment(val data: MangaData, val viewModel: PreviewViewMod
                     return
 
                 val bundle = Bundle().apply {
-                    putParcelable("manga_data", data)
+                    putParcelable("manga_data", mangaData)
                     putParcelable("manga_chapter", chapter)
                 }
                 val intent = Intent(requireActivity(), DownloadService::class.java).apply {
@@ -139,6 +149,19 @@ class PreviewChaptersFragment(val data: MangaData, val viewModel: PreviewViewMod
             recyclerView.addItemDecoration(itemDecoration)*/
 
             recyclerView.adapter = adapter
+
+            var touchHelper: ItemTouchHelper? = null
+
+            val itemTouchCallback = object : ChapterTouchCallback(requireContext(), adapter) {
+                override fun swipeRefresh(pos: Int) {
+                    adapter?.notifyItemChanged(pos)
+                    touchHelper?.attachToRecyclerView(null)
+                    touchHelper?.attachToRecyclerView(recyclerView)
+                }
+            }
+            touchHelper = ItemTouchHelper(itemTouchCallback).apply {
+                attachToRecyclerView(recyclerView)
+            }
         }
     }
 

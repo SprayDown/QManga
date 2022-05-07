@@ -103,7 +103,6 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
             })
 
             collapsingToolbar.title = mangaData.name
-
             collapsingToolbar.setExpandedTitleColor(
                 ContextCompat.getColor(
                     applicationContext,
@@ -222,7 +221,7 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
         val viewPager = binding.viewpager
         val pageAdapter = PageFragmentAdapter(this)
 
-        pageAdapter.add(DetailsFragment(details))
+        pageAdapter.add(DetailsFragment(details, viewModel))
         if (chaptersFragment != null)
             pageAdapter.add(chaptersFragment!!)
 
