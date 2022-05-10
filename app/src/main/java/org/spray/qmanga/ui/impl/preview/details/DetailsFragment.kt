@@ -3,6 +3,7 @@ package org.spray.qmanga.ui.impl.preview.details
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -10,6 +11,9 @@ import android.widget.TextView
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.chip.Chip
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import org.spray.qmanga.R
@@ -21,7 +25,11 @@ import org.spray.qmanga.utils.ext.prettyCount
 import org.spray.qmanga.utils.ext.themeColor
 
 
-class DetailsFragment(private val details: MangaDetails, val viewModel: PreviewViewModel) :
+class DetailsFragment(
+    private val details: MangaDetails,
+    val viewModel: PreviewViewModel,
+    val viewPager: ViewPager2
+) :
     Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
@@ -46,6 +54,32 @@ class DetailsFragment(private val details: MangaDetails, val viewModel: PreviewV
             similarView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             similarView.adapter = similarAdapter
+
+            similarView.addOnItemTouchListener(object : OnItemTouchListener {
+                var lastX = 0
+                override fun onInterceptTouchEvent(
+                    rv: RecyclerView,
+                    e: MotionEvent
+                ): Boolean {
+                    when (e.action) {
+                        MotionEvent.ACTION_DOWN -> lastX = e.x.toInt()
+                        MotionEvent.ACTION_MOVE -> {
+                            val isScrollingRight = e.x < lastX
+                            viewPager.isUserInputEnabled =
+                                isScrollingRight && (similarView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition() == similarAdapter.itemCount - 1 ||
+                                        !isScrollingRight && (similarView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() == 0
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            lastX = 0
+                            viewPager.isUserInputEnabled = true
+                        }
+                    }
+                    return false
+                }
+
+                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+            })
 
             OverScrollDecoratorHelper.setUpOverScroll(
                 similarView,

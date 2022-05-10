@@ -35,6 +35,9 @@
         <activity
             android:name=".ui.impl.search.SearchActivity"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ui.web.WebViewActivity"
+            android:configChanges="orientation|screenSize" />
 
         <service android:name=".ui.impl.library.download.DownloadService" />
         <meta-data

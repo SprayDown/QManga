@@ -16,14 +16,21 @@
         android:layout_marginVertical="4dp"
         android:orientation="vertical">
 
-        <org.spray.qmanga.ui.widgets.CoverImageView
-            android:id="@+id/mangaImage"
-            android:layout_width="130dp"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/empty"
-            tools:ignore="ContentDescription" />
+            app:cardCornerRadius="8dp">
+
+            <org.spray.qmanga.ui.widgets.CoverImageView
+                android:id="@+id/mangaImage"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/empty"
+                tools:ignore="ContentDescription" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mangaName"

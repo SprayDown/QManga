@@ -16,7 +16,9 @@
         android:label="@string/catalog_header" >
         <action
             android:id="@+id/action_catalogFragment_to_filtersFragment"
-            app:destination="@id/filtersFragment" />
+            app:destination="@id/filtersFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/libraryFragment"
@@ -25,7 +27,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="org.spray.qmanga.ui.fragments.ProfileFragment"
-        android:label="fragment_profile"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/filtersFragment"
@@ -36,7 +38,9 @@
             app:argType="org.spray.qmanga.client.models.QueryData" />
         <action
             android:id="@+id/action_filtersFragment_to_tagListFragment"
-            app:destination="@id/tagListFragment" />
+            app:destination="@id/tagListFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/tagListFragment"

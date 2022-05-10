@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.spray.qmanga.R
 import org.spray.qmanga.client.models.ListType
 import org.spray.qmanga.client.models.MangaChapter
 import org.spray.qmanga.client.models.MangaData
@@ -143,10 +145,10 @@ class PreviewChaptersFragment(val mangaData: MangaData, val viewModel: PreviewVi
             }
 
             recyclerView.layoutManager = linearLayoutManager
-/*            val itemDecoration =
+            val itemDecoration =
                 DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
             itemDecoration.setDrawable(activity?.getDrawable(R.drawable.divider_line)!!)
-            recyclerView.addItemDecoration(itemDecoration)*/
+            recyclerView.addItemDecoration(itemDecoration)
 
             recyclerView.adapter = adapter
 

@@ -22,7 +22,6 @@ class LibraryFragment : BaseFragment(R.string.library), ElementsUpdateListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLibraryBinding.inflate(inflater, container, false)
-
         val pageAdapter = PageFragmentAdapter(requireActivity())
         pageAdapter.add(RecentFragment())
         pageAdapter.add(DownloadsFragment())

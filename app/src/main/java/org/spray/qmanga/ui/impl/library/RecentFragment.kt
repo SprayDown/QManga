@@ -86,7 +86,6 @@ class RecentFragment : Fragment() {
 
     private fun update() {
         query.readAll("$WRITE_TIME DESC", object : QueryResponse<List<MangaRecent>> {
-            @SuppressLint("NotifyDataSetChanged")
             override fun onSuccess(data: List<MangaRecent>) {
                 adapter?.setDataSet(data)
                 listener?.onRecentUpdate(data.size)

@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +24,7 @@ import org.spray.qmanga.databinding.ReaderChapterBinding
 import org.spray.qmanga.sqlite.query.ChapterQuery
 import org.spray.qmanga.sqlite.query.RecentQuery
 import org.spray.qmanga.ui.base.BaseActivity
+import org.spray.qmanga.ui.base.listener.ReaderListener
 import org.spray.qmanga.ui.reader.chapters.ReaderChapterFragment
 import org.spray.qmanga.utils.ext.forceShowBar
 
@@ -41,7 +45,7 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
     private val recentQuery = RecentQuery()
     lateinit var chapterQuery: ChapterQuery
 
-    var read = false
+    private var read = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +60,8 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
         toolbar.title = getString(R.string.app_name)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        hideSystemBars()
 
         mangaData = intent.getParcelableExtra("data")
         chapterQuery = mangaData?.hashId?.let { ChapterQuery(it) }!!
@@ -107,15 +112,7 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
 
                     if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                         bottomBar.bottomAppBar.forceShowBar()
-                        toolbar.updateLayoutParams<AppBarLayout.LayoutParams> {
-                            scrollFlags =
-                                AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
-                        }
-                    } else
-                        toolbar.updateLayoutParams<AppBarLayout.LayoutParams> {
-                            scrollFlags =
-                                AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-                        }
+                    }
                 }
             })
         }
@@ -138,6 +135,27 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
         }
     }
 
+/*
+    fun getListener(): ReaderListener {
+        val lastPage = adapter.getDataSet()
+            .last().page
+        return object: ReaderListener {
+            override fun onPageChanged(currentPage: Int) {
+                binding.bottomBar.textViewPage.text = "$currentPage/$lastPage"
+            }
+
+            override fun forceShowBar() {
+                binding.bottomBar.bottomAppBar.forceShowBar()
+            }
+
+            override fun onRead() {
+                read = true
+            }
+
+        }
+    }
+*/
+
     override fun onResume() {
         super.onResume()
         read = false
@@ -155,6 +173,14 @@ class ReaderActivity : BaseActivity<ReaderChapterBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun hideSystemBars() {
+        val windowInsetsController =
+            ViewCompat.getWindowInsetsController(window.decorView) ?: return
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
     }
 
     private fun initAppBar(chapter: MangaChapter) = with(binding.appbarReader) {

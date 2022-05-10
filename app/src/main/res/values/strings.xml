@@ -35,6 +35,11 @@
     <string name="main_popular">Популярные</string>
     <string name="main_newest">Новое</string>
 
+    <string name="click_to_login">Нажмите чтобы войти</string>
+    <string name="show_info">Показать информацию о пользователе</string>
+    <string name="profile_id">ID: 102223</string>
+    <string name="local">Локальные</string>
+
 
     <!-- sort types -->
     <string name="newest">Новизне</string>

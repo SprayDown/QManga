@@ -7,9 +7,12 @@ class SourceManager {
 
     companion object {
         private val sources = mutableMapOf<MangaSource, Source>()
+        private val currentSource = MangaSource.REMANGA
 
         fun getCurrentSource() =
-            get(MangaSource.REMANGA)
+            get(currentSource)
+
+        fun getCurrentKey() = sources.entries.find { it.value == getCurrentSource() }!!.key
 
         fun init() {
             register(MangaSource.REMANGA, ReMangaSource())
@@ -18,7 +21,7 @@ class SourceManager {
         fun get(mangaSource: MangaSource): Source =
             sources[mangaSource] ?: throw IllegalArgumentException("Unknown Source")
 
-        fun register(mangaSource: MangaSource, source: Source) {
+        private fun register(mangaSource: MangaSource, source: Source) {
             if (sources[mangaSource] == null)
                 sources[mangaSource] = source;
             else

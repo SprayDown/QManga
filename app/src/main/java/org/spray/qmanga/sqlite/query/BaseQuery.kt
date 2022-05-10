@@ -45,7 +45,6 @@ abstract class BaseQuery<T>(protected val table: String, protected val mId: Stri
             create(data, response)
     }
 
-
     fun readAll(order: String?, response: QueryResponse<List<T>>?) {
         val sqlite = dbHelper.readableDatabase
 

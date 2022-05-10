@@ -4,6 +4,7 @@ const val TABLE_MANGA = "manga"
 const val TABLE_MANGA_RECENT = "manga_recent"
 const val TABLE_MANGA_LOCAL = "manga_local"
 const val TABLE_MANGA_CHAPTERS = "manga_chapters"
+const val TABLE_MANGA_BOOKMARKS = "manga_bookmarks"
 
 const val MANGA_ID = "hash_id"
 const val MANGA_NAME = "name"

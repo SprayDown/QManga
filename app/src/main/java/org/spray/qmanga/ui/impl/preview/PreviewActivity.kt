@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nostra13.universalimageloader.core.DisplayImageOptions
@@ -29,6 +28,7 @@ import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.client.source.SourceManager
 import org.spray.qmanga.databinding.ActivityPreviewBinding
 import org.spray.qmanga.sqlite.QueryResponse
+import org.spray.qmanga.sqlite.query.BookmarkQuery
 import org.spray.qmanga.sqlite.query.RecentQuery
 import org.spray.qmanga.ui.base.BaseActivity
 import org.spray.qmanga.ui.impl.library.download.DownloadManager
@@ -38,7 +38,6 @@ import org.spray.qmanga.ui.impl.preview.chapters.PreviewChaptersFragment
 import org.spray.qmanga.ui.impl.preview.details.DetailsFragment
 import org.spray.qmanga.ui.reader.ReaderActivity
 import org.spray.qmanga.utils.ext.blurRenderScript
-import org.spray.qmanga.utils.ext.forceShowBar
 
 class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
 
@@ -132,7 +131,9 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
             }
 
             bottomBar.buttonFavorite.setOnClickListener {
-                Toast.makeText(applicationContext, "В разработке...", Toast.LENGTH_SHORT).show()
+                val query = BookmarkQuery()
+                query.createOrUpdate(mangaData, mangaData.hashId, null)
+                Toast.makeText(applicationContext, "Успешно добавлено в закладку", Toast.LENGTH_SHORT).show()
             }
 
             bottomBar.buttonShare.setOnClickListener {
@@ -216,22 +217,17 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
             imageView2.visibility = View.VISIBLE
         }
 
-        chaptersFragment = PreviewChaptersFragment(data, viewModel)
-
         val viewPager = binding.viewpager
         val pageAdapter = PageFragmentAdapter(this)
 
-        pageAdapter.add(DetailsFragment(details, viewModel))
+        chaptersFragment = PreviewChaptersFragment(data, viewModel)
+        val detailsFragment = DetailsFragment(details, viewModel, viewPager)
+
+        pageAdapter.add(detailsFragment)
         if (chaptersFragment != null)
             pageAdapter.add(chaptersFragment!!)
 
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrollStateChanged(state: Int) {
-                if (!viewPager.canScrollVertically(1) && state == ViewPager2.SCROLL_STATE_IDLE)
-                    binding.bottomBar.bottomAppBar.forceShowBar()
-            }
-        })
-
+        viewPager.isUserInputEnabled
         viewPager.adapter = pageAdapter
         viewPager.offscreenPageLimit = 2
         val tabLayout = binding.tablayout
@@ -279,9 +275,5 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
         chapter = MangaChapter(
             data.chapterId, String(), data.chapterTome, data.chapterNumber, null
         )
-    }
-
-    companion object {
-        val LOCAL_MANGA_ACTION = "org.spray.qmanga.LOCAL_MANGA_BROADCAST"
     }
 }

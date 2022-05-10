@@ -1,9 +1,12 @@
 package org.spray.qmanga.client.source.impl
 
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.spray.qmanga.client.models.*
+import org.spray.qmanga.client.models.team.TeamData
+import org.spray.qmanga.client.models.user.UserData
 import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.network.NetworkHelper
 import org.spray.qmanga.utils.ext.map
@@ -16,6 +19,9 @@ import java.util.*
 class ReMangaSource() : Source() {
 
     override val domain = "remanga.org"
+    override val loginUrl = "https://$domain/user/login"
+    override val destroyUrl: String?
+        get() = "https://remanga.org/"
 
     private var MAX_COUNT = 20;
 
@@ -190,6 +196,42 @@ class ReMangaSource() : Source() {
                 MangaTag("Шантаж", 99),
                 MangaTag("Эльфы", 46)
             )
+        )
+    }
+
+    override suspend fun loadUserData(): UserData? {
+        val response = NetworkHelper.getJSONObject("https://$domain/api/users/current") ?: return null
+        if (response.get("content") is JSONArray)
+            return null
+
+        val content = response.getJSONObject("content") ?: return null
+
+        return UserData(
+            id = content.getInt("id"),
+            username = content.getString("username"),
+            avatarUrl = content.getString("avatar") ?: String(),
+            sex = content.getInt("sex"),
+            adult = content.getBoolean("adult"),
+            yaoi = content.getInt("yaoi"),
+            vk_id = content.getString("vk_id"),
+            google_id = content.getString("google_id"),
+            yandex_id = content.getString("yandex_id"),
+            mail_id = content.getString("mail_id"),
+            count_views = content.getInt("count_views"),
+            count_votes = content.getInt("count_votes"),
+            count_comments = content.getInt("count_comments"),
+            tagline = content.getString("tagline"),
+            teams = content.getJSONArray("publishers").mapToSet { tj ->
+                TeamData(
+                    tj.getInt("id"),
+                    tj.getString("name"),
+                    tj.getString("dir"),
+                    tj.getJSONObject("img").getString("mid")
+                )
+            },
+            badges = content.getJSONArray("badges").mapToSet { bj ->
+                bj.getString("name")
+            }
         )
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import org.spray.qmanga.QManga
+import org.spray.qmanga.sqlite.query.BookmarkQuery
 import org.spray.qmanga.sqlite.query.ChapterQuery
 import org.spray.qmanga.sqlite.query.LocalMangaQuery
 import org.spray.qmanga.sqlite.query.RecentQuery
@@ -13,6 +14,7 @@ class DatabaseHelper(
 ) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
+        BookmarkQuery.createTable(db)
         RecentQuery.createTable(db)
         LocalMangaQuery.createTable(db)
         ChapterQuery.createTable(db)

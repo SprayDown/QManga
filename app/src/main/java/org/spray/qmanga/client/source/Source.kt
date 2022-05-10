@@ -2,10 +2,13 @@ package org.spray.qmanga.client.source
 
 import android.content.Context
 import org.spray.qmanga.client.models.*
+import org.spray.qmanga.client.models.user.UserData
 
 abstract class Source() {
 
     abstract val domain: String
+    abstract val loginUrl: String
+    abstract val destroyUrl: String?
 
     val sortTypes = arrayListOf<SortType>()
     val tags = arrayListOf<MangaTag>()
@@ -22,6 +25,7 @@ abstract class Source() {
         throw UnsupportedOperationException("Source ($domain) does not support 'Similar' mangas")
     }
 
+    abstract suspend fun loadUserData(): UserData?
     abstract suspend fun search(query: String): List<MangaData>
     abstract suspend fun loadDetails(data: MangaData): MangaDetails
     abstract suspend fun loadPages(chapter: MangaChapter): List<MangaPage>

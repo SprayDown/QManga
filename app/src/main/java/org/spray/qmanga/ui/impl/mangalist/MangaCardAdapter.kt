@@ -41,7 +41,6 @@ open class MangaCardAdapter(
         .cacheOnDisk(true)
         .considerExifParams(true)
         .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-        .displayer(RoundedBitmapDisplayer(14))
         .build()
 
     override fun createVH(parent: ViewGroup, viewType: Int): MangaHolder {
