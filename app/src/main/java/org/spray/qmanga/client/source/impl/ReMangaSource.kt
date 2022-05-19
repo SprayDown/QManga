@@ -1,5 +1,7 @@
 package org.spray.qmanga.client.source.impl
 
+import androidx.collection.ArraySet
+import androidx.collection.arraySetOf
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -200,7 +202,8 @@ class ReMangaSource() : Source() {
     }
 
     override suspend fun loadUserData(): UserData? {
-        val response = NetworkHelper.getJSONObject("https://$domain/api/users/current") ?: return null
+        val response =
+            NetworkHelper.getJSONObject("https://$domain/api/users/current") ?: return null
         if (response.get("content") is JSONArray)
             return null
 
@@ -253,6 +256,39 @@ class ReMangaSource() : Source() {
                 rating = jo.getString("avg_rating"),
                 imageUrl = "https://api.$domain$media$imageUrl",
                 type = jo.getString("type")
+            )
+        }
+    }
+
+    override suspend fun loadBookmarks(
+        userId: Int,
+        type: Int,
+        count: Int,
+        page: Int
+    ): List<MangaBookmark> {
+        val url =
+            "https://api.$domain/api/users/$userId/bookmarks/?type=$type&count=$count&page=$page"
+        val jsonObject = NetworkHelper.getJSONObject(url)
+        jsonObject ?: return emptyList()
+
+        return jsonObject.getJSONArray("content").map { jo ->
+            val title = jo.getJSONObject("title")
+            val url = title.getString("dir")
+            val img = title.getJSONObject("img")
+
+            val imageUrl = img.getString("mid")
+
+            val rating =
+                if (!title.isNull("avg_rating")) title.getString("avg_rating") else "0"
+
+            MangaBookmark(
+                name = title.getString("rus_name"),
+                url = url,
+                rating = rating,
+                imageUrl = "https://api.$domain$imageUrl",
+                readProgress = jo.getInt("read_progress"),
+                readProgressTotal = jo.getInt("read_progress_total"),
+                countChapters = title.getInt("count_chapters")
             )
         }
     }

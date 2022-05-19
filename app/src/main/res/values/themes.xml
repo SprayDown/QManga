@@ -96,4 +96,9 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="ChipStyle" parent="@style/TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
 </resources>

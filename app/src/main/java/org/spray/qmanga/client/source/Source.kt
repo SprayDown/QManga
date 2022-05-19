@@ -25,6 +25,7 @@ abstract class Source() {
         throw UnsupportedOperationException("Source ($domain) does not support 'Similar' mangas")
     }
 
+    abstract suspend fun loadBookmarks(userId: Int, type: Int, count: Int, page: Int): List<MangaBookmark>
     abstract suspend fun loadUserData(): UserData?
     abstract suspend fun search(query: String): List<MangaData>
     abstract suspend fun loadDetails(data: MangaData): MangaDetails

@@ -18,6 +18,10 @@ class CatalogViewModel(val source: Source) : BaseViewModel() {
     var page = 1
     var count = 30
 
+    init {
+        update()
+    }
+
     fun update(
     ) {
         job = launchLoadingJob(Dispatchers.Default) {

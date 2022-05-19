@@ -24,6 +24,7 @@ const val MANGA_ISSUE_YEAR = "issue_year"
 const val MANGA_TOTAL_VOICES = "total_voices"
 const val MANGA_TOTAL_VIEWS = "total_views"
 const val MANGA_PREVIEW_IMG = "preview_img"
+const val MANGA_CHAPTERS_COUNT = "chapters_count"
 
 const val MANGA_CHAPTER_ID = "chapter_id"
 const val MANGA_CHAPTER_NAME = "chapter_name"

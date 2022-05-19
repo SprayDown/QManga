@@ -2,9 +2,9 @@
 <com.google.android.material.chip.Chip
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.MaterialComponents.Chip.Choice"
-    android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
-    app:chipBackgroundColor="?attr/bg_element"
-    android:elevation="3dp"
+    style="@style/ChipStyle"
+    app:chipBackgroundColor="?attr/toolbar_bg"
+    android:textColor="?attr/tc"
+    android:elevation="5dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"/>

@@ -7,8 +7,8 @@ open class MangaData(
     val name: String,
     val imageUrl: String,
     val url: String,
-    val rating: String,
-    val type: String,
+    val rating: String = "0",
+    val type: String = String(),
     var hashId: Int = url.hashCode()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(

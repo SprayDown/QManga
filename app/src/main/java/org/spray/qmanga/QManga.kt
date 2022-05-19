@@ -9,6 +9,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType
+import org.spray.qmanga.client.session.SessionManager
 import org.spray.qmanga.client.source.SourceManager
 import org.spray.qmanga.network.NetworkHelper
 
@@ -32,6 +33,8 @@ class QManga : Application() {
         SourceManager.init()
         initImageLoader()
         createNotificationChannel()
+
+        SessionManager.auth(SourceManager.getCurrentSource())
     }
 
     private fun initImageLoader() {

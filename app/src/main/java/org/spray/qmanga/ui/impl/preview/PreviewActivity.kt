@@ -20,10 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.assist.ImageScaleType
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
 import org.spray.qmanga.R
-import org.spray.qmanga.client.models.MangaChapter
-import org.spray.qmanga.client.models.MangaData
-import org.spray.qmanga.client.models.MangaDetails
-import org.spray.qmanga.client.models.MangaRecent
+import org.spray.qmanga.client.models.*
 import org.spray.qmanga.client.source.Source
 import org.spray.qmanga.client.source.SourceManager
 import org.spray.qmanga.databinding.ActivityPreviewBinding
@@ -130,12 +127,6 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
                 }
             }
 
-            bottomBar.buttonFavorite.setOnClickListener {
-                val query = BookmarkQuery()
-                query.createOrUpdate(mangaData, mangaData.hashId, null)
-                Toast.makeText(applicationContext, "Успешно добавлено в закладку", Toast.LENGTH_SHORT).show()
-            }
-
             bottomBar.buttonShare.setOnClickListener {
                 Toast.makeText(applicationContext, "В разработке...", Toast.LENGTH_SHORT).show()
             }
@@ -215,6 +206,25 @@ class PreviewActivity : BaseActivity<ActivityPreviewBinding>() {
                 textViewVoices.text = it
             }
             imageView2.visibility = View.VISIBLE
+
+            bottomBar.buttonFavorite.setOnClickListener {
+                val query = BookmarkQuery()
+                query.createOrUpdate(
+                    MangaBookmark(
+                        mangaData.name,
+                        mangaData.imageUrl,
+                        mangaData.url,
+                        mangaData.rating,
+                        mangaData.type,
+                        countChapters = details.count_chapters
+                    ), mangaData.hashId, null
+                )
+                Toast.makeText(
+                    applicationContext,
+                    "Успешно добавлено в закладку",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         val viewPager = binding.viewpager

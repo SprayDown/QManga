@@ -15,7 +15,7 @@
 
     <string name="year">%1$sг.</string>
 
-    <string name="read">Начать читать</string>
+    <string name="start_reading">Начать читать</string>
     <string name="continue_read">Продолжить</string>
 
     <string name="content">Содержание</string>
@@ -38,8 +38,21 @@
     <string name="click_to_login">Нажмите чтобы войти</string>
     <string name="show_info">Показать информацию о пользователе</string>
     <string name="profile_id">ID: 102223</string>
+    <string name="exit">Выйти</string>
+    <string name="user_info">Информация о пользователе</string>
+    <string name="chapters_read">Прочитано глав</string>
+    <string name="chapters_like">Пролайкано глав</string>
+    <string name="statistics">Статистика</string>
+    <string name="teams">В составе команд:</string>
+    <string name="badges">Метки</string>
+    <string name="sex">Пол</string>
     <string name="local">Локальные</string>
-
+    <string name="reading">Читаю</string>
+    <string name="will_read">Буду читать</string>
+    <string name="read">Прочитано</string>
+    <string name="postponed">Отложено</string>
+    <string name="abandoned">Брошено</string>
+    <string name="not_interesting">Не интересно</string>
 
     <!-- sort types -->
     <string name="newest">Новизне</string>

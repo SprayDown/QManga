@@ -46,7 +46,7 @@ class CatalogFragment : BaseFragment(R.string.catalog_header) {
     override fun createView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCatalogBinding.inflate(inflater, container, false)
 
         adapter = MangaCardAdapter(
@@ -60,8 +60,6 @@ class CatalogFragment : BaseFragment(R.string.catalog_header) {
             CatalogViewModel::class.java
         )
         viewModel.mangas.observe(viewLifecycleOwner, adapter::setDataSet)
-
-        update()
 
         with(binding) {
             recyclerView.autoFitColumns(122)
